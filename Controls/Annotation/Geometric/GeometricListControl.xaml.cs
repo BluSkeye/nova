@@ -36,12 +36,22 @@ namespace ssi
             if (geometricDataGrid.SelectedItems.Count != 0)
             {
                 string name = geometricDataGrid.SelectedItem.GetType().Name;
+
                 if (name == "PointListItem")
                 {
-                    foreach (PointListItem s in geometricDataGrid.SelectedItems)
+                    foreach (PointListItem pli in geometricDataGrid.SelectedItems)
                     {
-                        s.Confidence = 0.0;
+                        pli.Confidence = 0.0;
                     }
+
+                }
+                else if (name == "RectangleListItem")
+                {
+                    foreach (RectangleListItem rli in geometricDataGrid.SelectedItems)
+                    {
+                        rli.Confidence = 0.0;
+                    }
+
                 }
             }
         }
@@ -53,9 +63,16 @@ namespace ssi
                 string name = geometricDataGrid.SelectedItem.GetType().Name;
                 if (name == "PointListItem")
                 {
-                    foreach (PointListItem s in geometricDataGrid.SelectedItems)
+                    foreach (PointListItem pli in geometricDataGrid.SelectedItems)
                     {
-                        s.Confidence = 1.0;
+                        pli.Confidence = 1.0;
+                    }
+                }
+                else if (name == "RectangleListItem")
+                {
+                    foreach (RectangleListItem rli in geometricDataGrid.SelectedItems)
+                    {
+                        rli.Confidence = 1.0;
                     }
                 }
             }

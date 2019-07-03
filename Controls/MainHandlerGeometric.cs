@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.UI;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -13,10 +14,14 @@ namespace ssi
 {
     public partial class MainHandler
     {
-
         private void setPointList(PointList pl)
         {
             control.geometricListControl.geometricDataGrid.ItemsSource = pl;
+        }
+
+        private void setRectangleList(RectangleList rl)
+        {
+            control.geometricListControl.geometricDataGrid.ItemsSource = rl;
         }
 
         private void geometricTableUpdate()
@@ -31,12 +36,17 @@ namespace ssi
                 setPointList(item.Points);              
                 geometricOverlayUpdate(item, AnnoScheme.TYPE.POINT, pos);
             }
+            else if (item.Rectangles != null && item.Rectangles.Count > 0)
+            {
+                setRectangleList(item.Rectangles);
+                geometricOverlayUpdate(item, AnnoScheme.TYPE.RECTANGLE, pos);
+            }
         }
-
+        private AnnoScheme.TYPE CURRENT_TYPE;
         public void geometricOverlayUpdate(AnnoListItem item, AnnoScheme.TYPE type, int pos = -1)
         {
             WriteableBitmap overlay = null;
-
+            CURRENT_TYPE = type;
             IMedia video = mediaList.GetFirstVideo();
 
             if (video != null)
@@ -64,6 +74,64 @@ namespace ssi
                         }
                     }
                     break;
+                case AnnoScheme.TYPE.RECTANGLE:
+                    foreach (RectangleListItem r in item.Rectangles)
+                    {
+                        if (r.X1Coord != -1 && r.Y1Coord != -1 && r.X2Coord != -1 && r.Y2Coord != -1)
+                        {
+                            Color color = item.Color;
+                            color.A /= 4;
+                            color.A *= 3;
+                            //color.A = 128;
+                            int x1 = (int)r.X1Coord;
+                            int x2 = (int)r.X2Coord;
+
+                            int y1 = (int)r.Y1Coord;
+                            int y2 = (int)r.Y2Coord;
+
+                            double p1 = Math.Sqrt(Math.Pow(x1, 2) + Math.Pow(y1, 2));
+                            double p2 = Math.Sqrt(Math.Pow(x2, 2) + Math.Pow(y2, 2));
+
+                            int volume = Math.Abs(x1 - x2) * Math.Abs(y1 - y2);
+
+                            bool line = false;
+                            if (x1 == x2 || y1 == y2)
+                            {
+                                line = true;
+                            }
+                            Console.WriteLine(overlay.PixelHeight.ToString() + " " + overlay.PixelWidth.ToString());
+                            Console.WriteLine(overlay.Height.ToString() + " " + overlay.Width.ToString());
+                            try
+                            {
+                                if (p1 < p2)
+                                {
+                                    if (!line)
+                                    {
+                                        overlay.FillRectangle(x1, y1, x2, y2, color);
+                                    }
+                                    else
+                                    {
+                                        overlay.DrawLine(x1, y1, x2, y2, color);
+                                    }
+
+                                }
+                                else
+                                {
+                                    if (!line)
+                                    {
+                                        overlay.FillRectangle(x2, y2, x1, y1, color);
+                                    }
+                                    else
+                                    {
+                                        overlay.DrawLine(x2, y2, x1, y1, color);
+                                    }
+
+                                }
+                            }
+                            catch (Exception) { }
+                        }
+                    }
+                    break;
                 case AnnoScheme.TYPE.POLYGON:
                     break;
                 case AnnoScheme.TYPE.GRAPH:
@@ -75,7 +143,10 @@ namespace ssi
             overlay.Unlock();
         }
 
+        
+
         private static bool rightHeld;
+        private static bool leftHeld;
         private static bool RightHeld
         {
             get { return rightHeld; }
@@ -85,6 +156,19 @@ namespace ssi
                 if (!rightHeld)
                 {
                     RightHeldPos = new double[2] { 0, 0 };
+                }
+            }
+        }
+
+        private static bool LeftHeld
+        {
+            get { return leftHeld; }
+            set
+            {
+                leftHeld = value;
+                if (!leftHeld)
+                {
+                    LeftHeldPos = new double[2] { 0, 0 };
                 }
             }
         }
@@ -109,29 +193,85 @@ namespace ssi
             }
         }
 
+        private static double[] leftHeldPos;
+        private static double[] LeftHeldPos
+        {
+            get
+            {
+                if (leftHeldPos == null)
+                {
+                    leftHeldPos = new double[2] { 0, 0 };
+                }
+                return leftHeldPos;
+            }
+            set
+            {
+                if (value.Length == 2)
+                {
+                    leftHeldPos = value;
+                }
+            }
+        }
+
         void OnMediaMouseMove(IMedia media, double x, double y)
         {
             if (RightHeld)
             {
-                if (AnnoTierStatic.Selected != null &&
-                    AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.POINT &&
-                    control.annoListControl.annoDataGrid.SelectedItem != null &&
-                    control.geometricListControl.geometricDataGrid.SelectedItem != null)
+                if (CURRENT_TYPE == AnnoScheme.TYPE.POINT)
                 {
-                    double deltaX = x - RightHeldPos[0];
-                    double deltaY = y - RightHeldPos[1];
-
-                    RightHeldPos = new double[] { x, y };
-                    AnnoListItem item = (AnnoListItem)control.annoListControl.annoDataGrid.SelectedItem;
-
-                    foreach (PointListItem pli in control.geometricListControl.geometricDataGrid.SelectedItems)
+                    if (AnnoTierStatic.Selected != null &&
+                        AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.POINT &&
+                        control.annoListControl.annoDataGrid.SelectedItem != null &&
+                        control.geometricListControl.geometricDataGrid.SelectedItem != null)
                     {
-                        pli.XCoord += deltaX;
-                        pli.YCoord += deltaY;
+                        double deltaX = x - RightHeldPos[0];
+                        double deltaY = y - RightHeldPos[1];
+
+                        RightHeldPos = new double[] { x, y };
+                        AnnoListItem item = (AnnoListItem)control.annoListControl.annoDataGrid.SelectedItem;
+
+                        foreach (PointListItem pli in control.geometricListControl.geometricDataGrid.SelectedItems)
+                        {
+                            pli.XCoord += deltaX;
+                            pli.YCoord += deltaY;
+                        }
+                        geometricTableUpdate();
+                        int pos = control.annoListControl.annoDataGrid.SelectedIndex;
+                        geometricOverlayUpdate(item, AnnoScheme.TYPE.POINT, pos);
                     }
+                }
+                else if (CURRENT_TYPE == AnnoScheme.TYPE.RECTANGLE)
+                {
+
+                   
+                }
+            }
+            else if (LeftHeld)
+            {
+                //draw a preview of the rectangle whilst moving
+
+                if (AnnoTierStatic.Selected != null &&
+                    AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.RECTANGLE &&
+                    control.annoListControl.annoDataGrid.SelectedItem != null)
+                {
+                    AnnoListItem item = (AnnoListItem)control.annoListControl.annoDataGrid.SelectedItem;
+                    if (control.geometricListControl.geometricDataGrid.SelectedItems.Count > 1) return;
+                    RectangleList rectangles = (RectangleList)item.Rectangles;
+                    RectangleListItem rectangle = rectangles.Last();
+                    string output1 = "---m--- x: " + ((int)x).ToString() + " y: " + ((int)y).ToString();
+                    //Console.WriteLine(output1);
+                    rectangle.X2Coord = x;
+                    rectangle.Y2Coord = y;
+                    string output = "+++m++ x1: " + ((int)rectangle.X1Coord).ToString() + " y1: " + ((int)rectangle.Y1Coord).ToString() +
+                                    " x2: " + ((int)rectangle.X2Coord).ToString() + " y2: " + ((int)rectangle.Y2Coord).ToString();
+                    Console.WriteLine(output);
+
+
+                    rectangle.X2Coord = x;
+                    rectangle.Y2Coord = y;
                     geometricTableUpdate();
                     int pos = control.annoListControl.annoDataGrid.SelectedIndex;
-                    geometricOverlayUpdate(item, AnnoScheme.TYPE.POINT, pos);
+                    geometricOverlayUpdate(item, AnnoScheme.TYPE.RECTANGLE, pos);
                 }
             }
         }
@@ -141,6 +281,40 @@ namespace ssi
             if (Mouse.RightButton == MouseButtonState.Released && RightHeld)
             {
                 RightHeld = false;
+            }
+
+            if (Mouse.LeftButton == MouseButtonState.Released && LeftHeld)
+            {
+                LeftHeld = false;
+            }
+
+            //if (AnnoTierStatic.Selected != null &&
+            //    AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.RECTANGLE &&
+            //    control.annoListControl.annoDataGrid.SelectedItem != null &&
+            //    control.geometricListControl.geometricDataGrid.SelectedItem != null)
+            //{
+            if (AnnoTierStatic.Selected != null &&
+                AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.RECTANGLE &&
+                (AnnoListItem)control.annoListControl.annoDataGrid.SelectedItem != null)
+            { 
+                AnnoListItem item = (AnnoListItem)control.annoListControl.annoDataGrid.SelectedItem;
+                if (control.geometricListControl.geometricDataGrid.SelectedItems.Count > 1) return;
+
+                RectangleList rectangles = (RectangleList)item.Rectangles;
+                RectangleListItem rectangle = rectangles.Last();
+
+                string output1 = "---u--- x: " + ((int)x).ToString() + " y: " + ((int)y).ToString();
+                //Console.WriteLine(output1);
+
+                rectangle.X2Coord = x;
+                rectangle.Y2Coord = y;
+
+                string output = "+++u+++ x1: " + ((int)rectangle.X1Coord).ToString() + " y1: " + ((int)rectangle.Y1Coord).ToString() +
+                                    " x2: " + ((int)rectangle.X2Coord).ToString() + " y2: " + ((int)rectangle.Y2Coord).ToString() + "\n";
+                Console.WriteLine(output);
+                geometricTableUpdate();
+                int pos = control.annoListControl.annoDataGrid.SelectedIndex;
+                geometricOverlayUpdate(item, AnnoScheme.TYPE.RECTANGLE, pos);
             }
         }
 
@@ -162,11 +336,41 @@ namespace ssi
                     int pos = control.annoListControl.annoDataGrid.SelectedIndex;
                     geometricOverlayUpdate(item, AnnoScheme.TYPE.POINT, pos);
                 }
+                else if (AnnoTierStatic.Selected != null &&
+                    AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.RECTANGLE &&
+                    control.annoListControl.annoDataGrid.SelectedItem != null) 
+                    //control.geometricListControl.geometricDataGrid.SelectedItem != null)
+                {
+                    AnnoListItem item = (AnnoListItem)control.annoListControl.annoDataGrid.SelectedItem;
+                    if (control.geometricListControl.geometricDataGrid.SelectedItems.Count > 1) return;
+                    //RectangleListItem rectangle = (RectangleListItem)control.geometricListControl.geometricDataGrid.SelectedItem;
+                    RectangleList rectangles = (RectangleList)item.Rectangles;
+                    string label = "";
+                    string output1 = "\n---d--- x: " + ((int)x).ToString() + " y: " + ((int)y).ToString();
+                    //Console.WriteLine(output1);
+                    RectangleListItem rectangle = new RectangleListItem(x, y, x+1, y+1, label, 1);
+                    rectangles.Add(rectangle);
+
+
+                    string output = "+++d+++ x1: " + ((int)rectangle.X1Coord).ToString() + " y1: " + ((int)rectangle.Y1Coord).ToString() +
+                                    " x2: " + ((int)rectangle.X2Coord).ToString() + " y2: " + ((int)rectangle.Y2Coord).ToString();
+                    Console.WriteLine(output);
+
+
+                    geometricTableUpdate();
+                    int pos = control.annoListControl.annoDataGrid.SelectedIndex;
+                    geometricOverlayUpdate(item, AnnoScheme.TYPE.RECTANGLE, pos);
+                }
             }
             if (Mouse.RightButton == MouseButtonState.Pressed)
             {
                 RightHeldPos = new double[] { x, y };
                 RightHeld = true;
+            }
+            if (Mouse.LeftButton == MouseButtonState.Pressed)
+            {
+                leftHeldPos = new double[] { x, y };
+                LeftHeld = true;
             }
         }
 
@@ -178,6 +382,13 @@ namespace ssi
                 if (name == "PointListItem")
                 {
                     foreach (PointListItem item in control.geometricListControl.geometricDataGrid.SelectedItems)
+                    {
+                        item.Label = control.geometricListControl.editTextBox.Text;
+                    }
+                }
+                else if (name == "RectangleListItem")
+                {
+                    foreach (RectangleListItem item in control.geometricListControl.geometricDataGrid.SelectedItems)
                     {
                         item.Label = control.geometricListControl.editTextBox.Text;
                     }
@@ -221,6 +432,27 @@ namespace ssi
                         }
                     }
                 }
+                else if (control.geometricListControl.geometricDataGrid.Items[0].GetType().Name == "RectangleListItem")
+                {
+                    AnnoListItem item = (AnnoListItem)control.annoListControl.annoDataGrid.SelectedItems[0];
+                    AnnoList list = (AnnoList)control.annoListControl.annoDataGrid.ItemsSource;
+
+                    for (int i = 0; i < list.Count; ++i)
+                    {
+                        if (Math.Round(list[i].Start, 2) == Math.Round(item.Stop, 2))
+                        {
+                            for (int j = 0; j < list[i].Points.Count; ++j)
+                            {
+                                list[i].Rectangles[j].Label = item.Rectangles[j].Label;
+                                list[i].Rectangles[j].X1Coord = item.Rectangles[j].X1Coord;
+                                list[i].Rectangles[j].Y1Coord = item.Rectangles[j].Y1Coord;
+                                list[i].Rectangles[j].X2Coord = item.Rectangles[j].X2Coord;
+                                list[i].Rectangles[j].Y2Coord = item.Rectangles[j].Y2Coord;
+                            }
+                            break;
+                        }
+                    }
+                }
             }
             else
             {
@@ -236,6 +468,7 @@ namespace ssi
                 AnnoListItem item = (AnnoListItem) control.annoListControl.annoDataGrid.SelectedItem;
                 int pos = control.annoListControl.annoDataGrid.SelectedIndex;
                 geometricOverlayUpdate(item, AnnoScheme.TYPE.POINT, pos);
+                geometricOverlayUpdate(item, AnnoScheme.TYPE.RECTANGLE, pos);
             }
 
             if (control.geometricListControl.geometricDataGrid.SelectedItems.Count == 1)
@@ -243,12 +476,17 @@ namespace ssi
                 PointListItem item = (PointListItem)control.geometricListControl.geometricDataGrid.SelectedItems[0];
                 control.geometricListControl.editTextBox.Text = item.Label;
             }
+            else if (control.geometricListControl.geometricDataGrid.SelectedItems.Count == 1)
+            {
+                RectangleListItem item = (RectangleListItem)control.geometricListControl.geometricDataGrid.SelectedItems[0];
+                control.geometricListControl.editTextBox.Text = item.Label;
+            }
         }
 
         private void geometricListDelete(object sender, RoutedEventArgs e)
         {
             if (control.geometricListControl.geometricDataGrid.SelectedItems.Count != 0 
-                && control.annoListControl.annoDataGrid.SelectedItem != null)
+                && control.annoListControl.annoDataGrid.SelectedItem != null) // and is a point
             {
                 AnnoListItem item = (AnnoListItem)control.annoListControl.annoDataGrid.SelectedItem;
                 foreach (PointListItem point in control.geometricListControl.geometricDataGrid.SelectedItems)
@@ -260,7 +498,7 @@ namespace ssi
                 int pos = control.annoListControl.annoDataGrid.SelectedIndex;
                 geometricOverlayUpdate(item, AnnoScheme.TYPE.POINT, pos);
             }
-        }
+    }
 
         private void geometricKeyDown(object sender, KeyEventArgs e)
         {
@@ -317,3 +555,4 @@ namespace ssi
         private List<AnnoList> geometricCompare = new List<AnnoList>(0);
     }
 }
+

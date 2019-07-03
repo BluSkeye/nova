@@ -100,6 +100,10 @@ namespace ssi
                 {
                     annoType = AnnoScheme.TYPE.POINT;
                 }
+                else if (rectangleRadioButton.IsChecked == true)
+                {
+                    annoType = AnnoScheme.TYPE.RECTANGLE;
+                }
 
                 Scheme.Type = annoType;
 
@@ -113,6 +117,11 @@ namespace ssi
                 else if (Scheme.Type == AnnoScheme.TYPE.POINT)
                 {
                     Scheme.NumberOfPoints = 1;
+                    Scheme.MaxOrForeColor = Colors.Green;
+                }
+                else if (Scheme.Type == AnnoScheme.TYPE.RECTANGLE)
+                {
+                    Scheme.NumberOfRectangles = 0;
                     Scheme.MaxOrForeColor = Colors.Green;
                 }
             }

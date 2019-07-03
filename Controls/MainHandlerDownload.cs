@@ -381,7 +381,7 @@ namespace ssi
 
                        
                     }
-                    catch (WebException ex)
+                    catch (WebException)
                     {
 
                         return -1;
@@ -510,7 +510,7 @@ namespace ssi
                     System.IO.Compression.ZipFile.ExtractToDirectory("python/python36.zip", "python/python36");
                     File.Delete("python/python36.zip");
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     Console.WriteLine("python is already downloaded and extracted");
                 }

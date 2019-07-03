@@ -158,6 +158,7 @@ namespace ssi
                 control.annoLiveModeActivateMouse.Visibility = Visibility.Collapsed;
 
                 if (AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.POINT ||
+                    AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.RECTANGLE ||
                     AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.POLYGON ||
                     AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.GRAPH ||
                     AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.SEGMENTATION)
@@ -187,6 +188,16 @@ namespace ssi
                     control.annoListControl.ScoreColumn.Width = 70;
                 }
                 else if (AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.POINT)
+                {
+                    control.annoListControl.editButton.Visibility = Visibility.Collapsed;
+                    control.annoListControl.editComboBox.Visibility = Visibility.Collapsed;
+                    control.annoListControl.editTextBox.Visibility = Visibility.Collapsed;
+                    control.annoListControl.editComboBox.IsEnabled = false;
+                    control.annoListControl.editTextBox.IsEnabled = false;
+                    control.annoListControl.LabelColumn.Width = 70;
+                    control.annoListControl.ScoreColumn.Width = 0;
+                }
+                else if (AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.RECTANGLE)
                 {
                     control.annoListControl.editButton.Visibility = Visibility.Collapsed;
                     control.annoListControl.editComboBox.Visibility = Visibility.Collapsed;
@@ -356,6 +367,10 @@ namespace ssi
             else if (scheme.Type == AnnoScheme.TYPE.POINT)
             {
                 dialog = new AnnoTierNewPointSchemeWindow(ref scheme);
+            }
+            else if (scheme.Type == AnnoScheme.TYPE.RECTANGLE)
+            {
+                dialog = new AnnoTierNewRectangleSchemeWindow(ref scheme);
             }
             else
             {

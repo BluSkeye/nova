@@ -16,6 +16,7 @@ namespace ssi
             FREE,
             CONTINUOUS,
             POINT,
+            RECTANGLE,
             POLYGON,
             GRAPH,
             SEGMENTATION,
@@ -71,6 +72,8 @@ namespace ssi
         public double SampleRate { get; set; }
 
         public int NumberOfPoints { get; set; }
+
+        public int NumberOfRectangles { get; set; }
 
         public Color MinOrBackColor { get; set; }
 

@@ -201,9 +201,10 @@ namespace ssi
             get
             {
                 return (AnnoList.Scheme.Type == AnnoScheme.TYPE.POINT ||
-                       AnnoList.Scheme.Type == AnnoScheme.TYPE.POLYGON ||
-                       AnnoList.Scheme.Type == AnnoScheme.TYPE.GRAPH ||
-                       AnnoList.Scheme.Type == AnnoScheme.TYPE.SEGMENTATION);
+                        AnnoList.Scheme.Type == AnnoScheme.TYPE.RECTANGLE ||
+                        AnnoList.Scheme.Type == AnnoScheme.TYPE.POLYGON ||
+                        AnnoList.Scheme.Type == AnnoScheme.TYPE.GRAPH ||
+                        AnnoList.Scheme.Type == AnnoScheme.TYPE.SEGMENTATION);
             }
         }
 
@@ -363,6 +364,10 @@ namespace ssi
                     else if (anno.Scheme.Type == AnnoScheme.TYPE.POINT)
                     {
                         InitPointValues(anno);
+                    }
+                    else if (anno.Scheme.Type == AnnoScheme.TYPE.RECTANGLE)
+                    {
+                        InitRectangleValues(anno);
                     }
                     else if (anno.Scheme.Type == AnnoScheme.TYPE.POLYGON)
                     { }
@@ -562,7 +567,8 @@ namespace ssi
 
         public void SplitSegment(AnnoTierSegment s)
         {
-            AnnoListItem second_segment = new AnnoListItem(MainHandler.Time.TimeFromPixel(MainHandler.Time.CurrentSelectPosition), s.Item.Stop - MainHandler.Time.TimeFromPixel(MainHandler.Time.CurrentSelectPosition), s.Item.Label, s.Item.Meta, s.Item.Color, s.Item.Confidence, s.Item.isGeometric, s.Item.Points);
+            AnnoListItem second_segment = new AnnoListItem(MainHandler.Time.TimeFromPixel(MainHandler.Time.CurrentSelectPosition), s.Item.Stop - MainHandler.Time.TimeFromPixel(MainHandler.Time.CurrentSelectPosition), 
+                                                                                          s.Item.Label, s.Item.Meta, s.Item.Color, s.Item.Confidence, s.Item.isGeometric, s.Item.Points, s.Item.Rectangles);
             AnnoTierSegment second_s = AddSegment(second_segment);
             ChangeRepresentationObject RememberSplit = UnDoObject.MakeChangeRepresentationObjectForSplit(GetLeft(s), (FrameworkElement)s, (FrameworkElement)second_s);
             UnDoObject.InsertObjectforUndoRedo(RememberSplit);
@@ -651,7 +657,7 @@ namespace ssi
             double delta = 1.0 / sr;
             if (AnnoList.Count < samples)
             {
-                Random rnd = new Random();
+                //Random rnd = new Random();
                 for (int i = AnnoList.Count; i < samples; i++)
                 {
                     PointList points = new PointList();
@@ -667,6 +673,41 @@ namespace ssi
                     AnnoList.Add(ali);
                 }
             }
+
+            TimeRangeChanged(MainHandler.Time);
+            //TimeRangeChanged(MainHandler.Time);
+        }
+
+
+        public void InitRectangleValues(AnnoList anno)
+        {
+            double sr = anno.Scheme.SampleRate;
+            int samples = (int)Math.Round(MainHandler.Time.TotalDuration * sr);
+
+            double delta = 1.0 / sr;
+            if (AnnoList.Count < samples)
+            {
+                Random rnd = new Random();
+                for (int i = AnnoList.Count; i < samples; i++)
+                {
+                    RectangleList rectangles = new RectangleList();
+                    //int x1 = -1;
+                    //int y1 = -1;
+                    //int x2 = -1;
+                    //int y2 = -1;
+                    //rectangles.Add(new RectangleListItem(x1, y1, x2, y2, (j + 1).ToString(), 1.0));
+                    AnnoListItem ali = new AnnoListItem(i * delta, delta, "Frame " + (i + 1).ToString(), "", anno.Scheme.MinOrBackColor, 1, true, null, rectangles);
+                    AnnoList.Add(ali);
+                }
+            }
+
+            TimeRangeChanged(MainHandler.Time);
+            //TimeRangeChanged(MainHandler.Time);
+        }
+
+        public void AddRectangle(RectangleListItem rli)
+        {
+            int al = AnnoList.Count;
 
             TimeRangeChanged(MainHandler.Time);
             //TimeRangeChanged(MainHandler.Time);
@@ -1024,7 +1065,7 @@ namespace ssi
                             MainHandler.Time.CurrentPlayPosition = selectedLabel.Item.Stop;
 
                             if (MainHandler.Time.PixelFromTime(selectedLabel.Item.Stop) >= MainHandler.Time.CurrentSelectPosition - 1 && MainHandler.Time.PixelFromTime(selectedLabel.Item.Start) >= MainHandler.Time.CurrentSelectPosition - 1 && point.X < 0) annorightdirection = false;
-                            SelectLabel(selectedLabel); 
+                            SelectLabel(selectedLabel);
                             this.Select(true);
                         }
                         else

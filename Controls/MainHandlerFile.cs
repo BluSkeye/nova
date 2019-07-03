@@ -406,7 +406,7 @@ namespace ssi
             {
                 signal = Signal.LoadAudioFile(filename);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }

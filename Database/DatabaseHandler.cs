@@ -1550,6 +1550,7 @@ namespace ssi
             BsonElement documentColor = new BsonElement("color", new SolidColorBrush(scheme.MinOrBackColor).Color.ToString());
             BsonElement documentMaxColor = new BsonElement("max_color", new SolidColorBrush(scheme.MaxOrForeColor).Color.ToString());
             BsonElement documentPointsNum = new BsonElement("num", scheme.NumberOfPoints);
+            BsonElement documentRectanglesNum = new BsonElement("num", scheme.NumberOfRectangles);
 
             document.Add(documentName);
             document.Add(documentType);
@@ -1576,6 +1577,12 @@ namespace ssi
             else if (scheme.Type == AnnoScheme.TYPE.POINT)
             {
                 document.Add(documentPointsNum);
+                document.Add(documentSr);
+                document.Add(documentColor);
+            }
+            else if (scheme.Type == AnnoScheme.TYPE.RECTANGLE)
+            {
+                document.Add(documentRectanglesNum);
                 document.Add(documentSr);
                 document.Add(documentColor);
             }
@@ -1754,6 +1761,12 @@ namespace ssi
                 else if (scheme.Type == AnnoScheme.TYPE.POINT)
                 {
                     scheme.NumberOfPoints = annoSchemeDocument["num"].ToInt32();
+                    scheme.SampleRate = annoSchemeDocument["sr"].ToDouble();
+                    scheme.MinOrBackColor = (Color)ColorConverter.ConvertFromString(annoSchemeDocument["color"].ToString());
+                }
+                else if (scheme.Type == AnnoScheme.TYPE.RECTANGLE)
+                {
+                    scheme.NumberOfRectangles = annoSchemeDocument["num"].ToInt32();
                     scheme.SampleRate = annoSchemeDocument["sr"].ToDouble();
                     scheme.MinOrBackColor = (Color)ColorConverter.ConvertFromString(annoSchemeDocument["color"].ToString());
                 }
@@ -1993,6 +2006,28 @@ namespace ssi
                     }
 
                     data.Add(new BsonDocument { { "label", annoList[i].Label }, { "conf", annoList[i].Confidence }, { "points", Points } });
+                }
+            }
+            else if (schemeType == AnnoScheme.TYPE.RECTANGLE)
+            {
+                BsonDocument singlesinglerectangle;
+                for (int i = 0; i < annoList.Count; i++)
+                {
+                    BsonArray Rectangles = new BsonArray();
+                    for (int j = 0; j < annoList.Scheme.NumberOfRectangles; j++)
+                    {
+                        singlesinglerectangle = new BsonDocument();
+                        singlesinglerectangle.Add(new BsonElement("label", annoList[i].Rectangles[j].Label));
+                        singlesinglerectangle.Add(new BsonElement("x1", annoList[i].Rectangles[j].X1Coord));
+                        singlesinglerectangle.Add(new BsonElement("y1", annoList[i].Rectangles[j].Y1Coord));
+                        singlesinglerectangle.Add(new BsonElement("x2", annoList[i].Rectangles[j].X2Coord));
+                        singlesinglerectangle.Add(new BsonElement("y2", annoList[i].Rectangles[j].Y2Coord));
+                        singlesinglerectangle.Add(new BsonElement("conf", annoList[i].Rectangles[j].Confidence));
+
+                        Rectangles.Add(singlesinglerectangle);
+                    }
+
+                    data.Add(new BsonDocument { { "label", annoList[i].Label }, { "conf", annoList[i].Confidence }, { "rectangles", Rectangles } });
                 }
             }
 
@@ -2451,6 +2486,37 @@ namespace ssi
                         double dur = 1 / annoList.Scheme.SampleRate;
 
                         AnnoListItem ali = new AnnoListItem(start, dur, label, "", annoList.Scheme.MinOrBackColor, confidence, true, pl);
+                        annoList.Add(ali);
+                    }
+                }
+                else if (annoList.Scheme.Type == AnnoScheme.TYPE.RECTANGLE)
+                {
+                    annoList.Scheme.MinOrBackColor = (Color)ColorConverter.ConvertFromString(scheme["color"].ToString());
+
+                    for (int i = 0; i < labels.Count; i++)
+                    {
+                        BsonDocument entry = labels[i].AsBsonDocument;
+                        string label = entry["label"].AsString;
+                        double confidence = entry["conf"].AsDouble;
+                        RectangleList rl = new RectangleList();
+                        BsonArray rectangles = entry["rectangles"].AsBsonArray;
+
+                        foreach (BsonDocument b in rectangles)
+                        {
+                            int x1 = b["x1"].ToInt32();
+                            int y1 = b["y1"].ToInt32();
+                            int x2 = b["x2"].ToInt32();
+                            int y2 = b["y2"].ToInt32();
+                            string l = b["label"].ToString();
+                            double c = b["conf"].ToDouble();
+                            RectangleListItem rli = new RectangleListItem(x1, y1, x2, y2, l, c);
+                            rl.Add(rli);
+                        }
+
+                        double start = i / annoList.Scheme.SampleRate;
+                        double dur = 1 / annoList.Scheme.SampleRate;
+
+                        AnnoListItem ali = new AnnoListItem(start, dur, label, "", annoList.Scheme.MinOrBackColor, confidence, true, null, rl);
                         annoList.Add(ali);
                     }
                 }

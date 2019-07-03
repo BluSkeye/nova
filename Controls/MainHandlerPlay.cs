@@ -67,9 +67,13 @@ namespace ssi
                 if (position < control.annoListControl.annoDataGrid.Items.Count)
                 {
                     AnnoListItem ali = (AnnoListItem)control.annoListControl.annoDataGrid.Items[position];
-                    if (ali.Points.Count > 0)
+                    if (ali.Points != null && ali.Points.Count > 0)
                     {
                         geometricOverlayUpdate(ali, AnnoScheme.TYPE.POINT, position);
+                    }
+                    if (ali.Rectangles != null && ali.Rectangles.Count > 0)
+                    {
+                        geometricOverlayUpdate(ali, AnnoScheme.TYPE.RECTANGLE, position);
                     }
                 }
             }

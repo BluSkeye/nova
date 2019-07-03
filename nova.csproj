@@ -131,8 +131,10 @@
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Printing" />
     <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.DataVisualization" />
     <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Controls.DataVisualization.Toolkit">
       <HintPath>References\System.Windows.Controls.DataVisualization.Toolkit.dll</HintPath>
     </Reference>
@@ -171,6 +173,9 @@
     </Compile>
     <Compile Include="Controls\Annotation\AnnoTierSettingsWindow.xaml.cs">
       <DependentUpon>AnnoTierSettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Annotation\Geometric\AnnoTierNewRectangleSchemeWindow.xaml.cs">
+      <DependentUpon>AnnoTierNewRectangleSchemeWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Annotation\Geometric\AnnoTierNewPointSchemeWindow.xaml.cs">
       <DependentUpon>AnnoTierNewPointSchemeWindow.xaml</DependentUpon>
@@ -244,6 +249,7 @@
     <Compile Include="Database\DatabaseCMLTrainAndPredictWindow.xaml.cs">
       <DependentUpon>DatabaseCMLTrainAndPredictWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\IRectangleList.cs" />
     <Compile Include="Interfaces\IPointList.cs" />
     <Compile Include="Tools\InvokePython.cs" />
     <Compile Include="Tools\PluginCaller.cs" />
@@ -257,6 +263,8 @@
     <Compile Include="Types\AnnoTrigger.cs" />
     <Compile Include="Types\Face.cs" />
     <Compile Include="Types\Pipeline.cs" />
+    <Compile Include="Types\RectangleListIitem.cs" />
+    <Compile Include="Types\RectangleList.cs" />
     <Compile Include="Types\PointList.cs" />
     <Compile Include="Types\PointListItem.cs" />
     <Compile Include="Types\SignalFile.cs" />
@@ -322,6 +330,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Annotation\AnnoTierSettingsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Annotation\Geometric\AnnoTierNewRectangleSchemeWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -621,6 +633,7 @@
     <Content Include="PythonScripts\SpearmanR.py" />
     <Content Include="PythonScripts\test.py" />
     <Content Include="PythonScripts\__init__.py" />
+    <Resource Include="Resources\rectangle.png" />
     <Resource Include="Resources\Question_16x.png" />
     <Resource Include="Resources\dropmodel.png" />
     <Resource Include="Resources\dragdrop.png" />
