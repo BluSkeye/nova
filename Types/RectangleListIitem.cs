@@ -8,51 +8,96 @@ namespace ssi
 {
     public class RectangleListItem : IObservableListItem
     {
-        private double x1;
-        private double y1;
+        private int Ax;
+        private int Ay;
+        private int Dx;
+        private int Dy;
 
-        private double x2;
-        private double y2;
+        private int x1;
+        private int y1;
+        private int x2;
+        private int y2;
         private string label;
         private double confidence;
 
-        public double X1Coord
+        public void UpdateADCoords()
         {
-            get { return x1; }
+            //  A---B
+            //  |   |
+            //  C---D
+            int Ax = Math.Min(this.x1, this.x2);
+            int Ay = Math.Min(this.y1, this.y2);
+            int Dx = Math.Max(this.x1, this.x2);
+            int Dy = Math.Max(this.y1, this.y2);
+
+            this.Ax = Ax;
+            this.Ay = Ay;
+            this.Dx = Dx;
+            this.Dy = Dy;
+        }
+
+        public double XCoord
+        {
+            get { return Ax; }
+        }
+
+        public double YCoord
+        {
+            get { return Ay; }
+        }
+
+        public int AxCoord
+        {
+            get { return Ax; }
+        }
+
+        public int DxCoord
+        {
+            get { return Dx; }
+        }
+
+        public int AyCoord
+        {
+            get { return Ay; }
+        }
+        public int DyCoord
+        {
+            get { return Dy; }
+        }
+
+        public int X1Coord
+        {
             set
             {
                 x1 = value;
-                OnPropertyChanged("X1");
             }
+            get { return x1; }
         }
 
-        public double X2Coord
+        public int X2Coord
         {
-            get { return x2; }
             set
             {
                 x2 = value;
-                OnPropertyChanged("X2");
             }
+            get { return x2; }
         }
 
-        public double Y1Coord
+        public int Y1Coord
         {
-            get { return y1; }
             set
             {
                 y1 = value;
-                OnPropertyChanged("Y1");
             }
+            get { return y1; }
         }
-        public double Y2Coord
+        public int Y2Coord
         {
-            get { return y2; }
             set
             {
                 y2 = value;
-                OnPropertyChanged("Y2");
             }
+            get { return y2; }
         }
 
         public string Label
@@ -75,12 +120,13 @@ namespace ssi
             }
         }
 
-        public RectangleListItem(double x1, double y1, double x2, double y2, string label, double confidence)
+        public RectangleListItem(int x1, int y1, int x2, int y2, string label, double confidence)
         {
             this.x1 = x1;
-            this.x2 = x2;
             this.y1 = y1;
+            this.x2 = x2;
             this.y2 = y2;
+            UpdateADCoords();
             this.label = label;
             this.confidence = confidence;
         }

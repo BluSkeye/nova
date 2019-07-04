@@ -691,11 +691,11 @@ namespace ssi
                 for (int i = AnnoList.Count; i < samples; i++)
                 {
                     RectangleList rectangles = new RectangleList();
-                    //int x1 = -1;
-                    //int y1 = -1;
-                    //int x2 = -1;
-                    //int y2 = -1;
-                    //rectangles.Add(new RectangleListItem(x1, y1, x2, y2, (j + 1).ToString(), 1.0));
+                    int x1 = -1;
+                    int y1 = -1;
+                    int x2 = -1;
+                    int y2 = -1;
+                    rectangles.Add(new RectangleListItem(x1, y1, x2, y2, "1", 1.0));
                     AnnoListItem ali = new AnnoListItem(i * delta, delta, "Frame " + (i + 1).ToString(), "", anno.Scheme.MinOrBackColor, 1, true, null, rectangles);
                     AnnoList.Add(ali);
                 }

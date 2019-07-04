@@ -136,6 +136,19 @@ namespace ssi
                             sw.WriteLine(output + e.Confidence);
                         }
                     }
+                    else if (Scheme.Type == AnnoScheme.TYPE.RECTANGLE)
+                    {
+                        foreach (AnnoListItem e in this)
+                        {
+                            string output = "";
+                            output += e.Label + delimiter;
+                            for (int i = 0; i < e.Rectangles.Count; ++i)
+                            {
+                                output += '(' + e.Rectangles[i].Label + ':' + e.Rectangles[i].X1Coord + ':' + e.Rectangles[i].Y1Coord + ":" +  e.Rectangles[i].X2Coord + ':' + e.Rectangles[i].Y2Coord + ":" + e.Rectangles[i].Confidence + ')' + delimiter;
+                            }
+                            sw.WriteLine(output + e.Confidence);
+                        }
+                    }
                     else if (Scheme.Type == AnnoScheme.TYPE.POLYGON)
                     {
                         foreach (AnnoListItem e in this)

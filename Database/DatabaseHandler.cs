@@ -2018,10 +2018,10 @@ namespace ssi
                     {
                         singlesinglerectangle = new BsonDocument();
                         singlesinglerectangle.Add(new BsonElement("label", annoList[i].Rectangles[j].Label));
-                        singlesinglerectangle.Add(new BsonElement("x1", annoList[i].Rectangles[j].X1Coord));
-                        singlesinglerectangle.Add(new BsonElement("y1", annoList[i].Rectangles[j].Y1Coord));
-                        singlesinglerectangle.Add(new BsonElement("x2", annoList[i].Rectangles[j].X2Coord));
-                        singlesinglerectangle.Add(new BsonElement("y2", annoList[i].Rectangles[j].Y2Coord));
+                        singlesinglerectangle.Add(new BsonElement("x1", annoList[i].Rectangles[j].AxCoord));
+                        singlesinglerectangle.Add(new BsonElement("y1", annoList[i].Rectangles[j].AyCoord));
+                        singlesinglerectangle.Add(new BsonElement("x2", annoList[i].Rectangles[j].DxCoord));
+                        singlesinglerectangle.Add(new BsonElement("y2", annoList[i].Rectangles[j].DyCoord));
                         singlesinglerectangle.Add(new BsonElement("conf", annoList[i].Rectangles[j].Confidence));
 
                         Rectangles.Add(singlesinglerectangle);
