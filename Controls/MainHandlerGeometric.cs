@@ -521,7 +521,7 @@ namespace ssi
                     {
                         if (Math.Round(list[i].Start, 2) == Math.Round(item.Stop, 2))
                         {
-                            for (int j = 0; j < list[i].Points.Count; ++j)
+                            for (int j = 0; j < list[i].Rectangles.Count; ++j)
                             {
                                 list[i].Rectangles[j].Label = item.Rectangles[j].Label;
                                 
@@ -580,8 +580,9 @@ namespace ssi
 
         private void geometricListDelete(object sender, RoutedEventArgs e)
         {
-            if (control.geometricListControl.geometricDataGrid.SelectedItems.Count != 0 
-                && control.annoListControl.annoDataGrid.SelectedItem != null) // and is a point
+            if (control.annoListControl.annoDataGrid.SelectedItem != null &&
+                AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.POINT &&
+                control.geometricListControl.geometricDataGrid.SelectedItems.Count != 0) // and is a point
             {
                 AnnoListItem item = (AnnoListItem)control.annoListControl.annoDataGrid.SelectedItem;
                 foreach (PointListItem point in control.geometricListControl.geometricDataGrid.SelectedItems)
@@ -593,7 +594,32 @@ namespace ssi
                 int pos = control.annoListControl.annoDataGrid.SelectedIndex;
                 geometricOverlayUpdate(item, AnnoScheme.TYPE.POINT, pos);
             }
-    }
+            else if (control.annoListControl.annoDataGrid.SelectedItem != null &&
+                AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.RECTANGLE &&
+                control.geometricListControl.geometricDataGrid.SelectedItems.Count != 0) // and is a rectangle
+                {
+                AnnoListItem item = (AnnoListItem)control.annoListControl.annoDataGrid.SelectedItem;
+
+                RectangleList rectangles = (RectangleList)item.Rectangles;
+                List<RectangleListItem> rl = new List<RectangleListItem>();
+
+                foreach (RectangleListItem rectangle in control.geometricListControl.geometricDataGrid.SelectedItems)
+                {
+                    rl.Add(rectangle);
+                }
+
+                foreach (RectangleListItem r in rl)
+                {
+                    int ir = rectangles.IndexOf(r);
+                    rectangles.RemoveAt(ir);
+                }
+
+                geometricTableUpdate();
+                int pos = control.annoListControl.annoDataGrid.SelectedIndex;
+                geometricOverlayUpdate(item, AnnoScheme.TYPE.RECTANGLE, pos);
+            }
+
+        }
 
         private void geometricKeyDown(object sender, KeyEventArgs e)
         {

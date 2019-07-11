@@ -79,8 +79,6 @@ namespace ssi
             if (MainHandler.Time != null)
             {
 
-    
-
                 MainHandler.Time.SelectionStart = MainHandler.Time.TotalDuration * ((double)slider.RangeStartSelected / (double)slider.RangeStop);
                 MainHandler.Time.SelectionStop = MainHandler.Time.TotalDuration * ((double)slider.RangeStopSelected / (double)slider.RangeStop);
 

@@ -420,8 +420,6 @@ namespace ssi
             TimeRangeChanged(MainHandler.Time);
         }
 
-
-
         public void continuousSegmentUpDown(bool up = true)
         {
             int numberOfLevels = Properties.Settings.Default.ContinuousHotkeysNumber;
@@ -732,10 +730,6 @@ namespace ssi
             }
             TimeRangeChanged(MainHandler.Time);
         }
-
-
-
-
 
         public void NewAnnoKey()
         {
