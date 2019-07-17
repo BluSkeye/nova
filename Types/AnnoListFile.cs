@@ -337,6 +337,10 @@ namespace ssi
                 {
                     list.Scheme.Type = AnnoScheme.TYPE.POINT;
                 }
+                else if (type == AnnoScheme.TYPE.RECTANGLE.ToString())
+                {
+                    list.Scheme.Type = AnnoScheme.TYPE.RECTANGLE;
+                }
                 else if (type == AnnoScheme.TYPE.POLYGON.ToString())
                 {
                     list.Scheme.Type = AnnoScheme.TYPE.POLYGON;
@@ -404,6 +408,10 @@ namespace ssi
                 {
                     list.Scheme.SampleRate = double.Parse(scheme.Attributes["sr"].Value);
                     list.Scheme.NumberOfPoints = int.Parse(scheme.Attributes["num"].Value);                    
+                }
+                else if (list.Scheme.Type == AnnoScheme.TYPE.RECTANGLE)
+                {
+                    list.Scheme.SampleRate = double.Parse(scheme.Attributes["sr"].Value);
                 }
 
                 if (File.Exists(filepath + "~"))
@@ -483,6 +491,22 @@ namespace ssi
                                     points.Add(new PointListItem(double.Parse(pointData[1]), double.Parse(pointData[2]), pointData[0], double.Parse(pointData[3])));
                                 }
                                 AnnoListItem ali = new AnnoListItem(start, 1 / list.Scheme.SampleRate, frameLabel, "", list.Scheme.MinOrBackColor, frameConfidence, true, points);
+                                list.Add(ali);
+                                start = start + 1 / list.Scheme.SampleRate;
+                            }
+                            else if (list.Scheme.Type == AnnoScheme.TYPE.RECTANGLE)
+                            {
+                                string frameLabel = data[0];
+                                double frameConfidence = Convert.ToDouble(data[data.Count() - 1], CultureInfo.InvariantCulture);
+                                RectangleList rectangles = new RectangleList();
+                                for (int i = 1; i < data.Count() - 1; ++i)
+                                {
+                                    string rd = data[i].Replace("(", "");
+                                    rd = rd.Replace(")", "");
+                                    string[] rectangleData = rd.Split(':');
+                                    rectangles.Add(new RectangleListItem(int.Parse(rectangleData[1]), int.Parse(rectangleData[2]), int.Parse(rectangleData[3]), int.Parse(rectangleData[4]), rectangleData[0], double.Parse(rectangleData[5])));
+                                }
+                                AnnoListItem ali = new AnnoListItem(start, 1 / list.Scheme.SampleRate, frameLabel, "", list.Scheme.MinOrBackColor, frameConfidence, true, null, rectangles);
                                 list.Add(ali);
                                 start = start + 1 / list.Scheme.SampleRate;
                             }

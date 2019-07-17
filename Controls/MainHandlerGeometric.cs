@@ -521,16 +521,40 @@ namespace ssi
                     {
                         if (Math.Round(list[i].Start, 2) == Math.Round(item.Stop, 2))
                         {
-                            for (int j = 0; j < list[i].Rectangles.Count; ++j)
+                            for (int j = 0; j < item.Rectangles.Count; ++j)
                             {
-                                list[i].Rectangles[j].Label = item.Rectangles[j].Label;
-                                
-                                list[i].Rectangles[j].X1Coord = (int)item.Rectangles[j].X1Coord;
-                                list[i].Rectangles[j].Y1Coord = (int)item.Rectangles[j].Y1Coord;
-                                list[i].Rectangles[j].X2Coord = (int)item.Rectangles[j].X2Coord;
-                                list[i].Rectangles[j].Y2Coord = (int)item.Rectangles[j].Y2Coord;
-                                list[i].Rectangles[j].UpdateADCoords();
-                                
+                                bool added = false;
+                                for (int k = 0; k < list[i].Rectangles.Count; ++k)
+                                {
+                                    if (list[i].Rectangles[k].X1Coord == -1 && list[i].Rectangles[k].Y1Coord == -1)
+                                    {
+                                        list[i].Rectangles[k].Label = item.Rectangles[j].Label;
+
+                                        list[i].Rectangles[k].X1Coord = (int)item.Rectangles[j].X1Coord;
+                                        list[i].Rectangles[k].Y1Coord = (int)item.Rectangles[j].Y1Coord;
+                                        list[i].Rectangles[k].X2Coord = (int)item.Rectangles[j].X2Coord;
+                                        list[i].Rectangles[k].Y2Coord = (int)item.Rectangles[j].Y2Coord;
+                                        list[i].Rectangles[k].Confidence = 0.0;
+                                        list[i].Rectangles[k].UpdateADCoords();
+                                        added = true;
+                                    }
+                                    else if (list[i].Rectangles[k].Label == item.Rectangles[j].Label)
+                                    {
+                                        list[i].Rectangles[k].X1Coord = (int)item.Rectangles[j].X1Coord;
+                                        list[i].Rectangles[k].Y1Coord = (int)item.Rectangles[j].Y1Coord;
+                                        list[i].Rectangles[k].X2Coord = (int)item.Rectangles[j].X2Coord;
+                                        list[i].Rectangles[k].Y2Coord = (int)item.Rectangles[j].Y2Coord;
+                                        list[i].Rectangles[k].Confidence = 0.0;
+                                        list[i].Rectangles[k].UpdateADCoords();
+                                        added = true;
+                                    }
+                                }
+                                if (!added)
+                                {
+                                    RectangleListItem rli = new RectangleListItem((int)item.Rectangles[j].X1Coord, (int)item.Rectangles[j].Y1Coord, (int)item.Rectangles[j].X2Coord, (int)item.Rectangles[j].Y2Coord, item.Rectangles[j].Label, 0.0);
+                                    list[i].Rectangles.Add(rli);
+                                    added = true;
+                                }
                             }
                             break;
                         }
