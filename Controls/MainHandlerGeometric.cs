@@ -454,7 +454,7 @@ namespace ssi
             }
         }
 
-        private void geometricListEdit_Click(object sender, RoutedEventArgs e)
+        /*private void geometricListEdit_Click(object sender, RoutedEventArgs e)
         {
             if (control.geometricListControl.geometricDataGrid.SelectedItems.Count == 1)
             {
@@ -474,12 +474,12 @@ namespace ssi
                     }
                 }
             }
-        }
+        }*/
 
-        private void geometricListEdit_Focused(object sender, MouseEventArgs e)
+        /*private void geometricListEdit_Focused(object sender, MouseEventArgs e)
         {
             control.geometricListControl.editTextBox.SelectAll();
-        }
+        }*/
 
         private void geometricListSelectAll_Click(object sender, RoutedEventArgs e)
         {
@@ -586,7 +586,7 @@ namespace ssi
                 
             }
 
-            if (control.geometricListControl.geometricDataGrid.SelectedItems.Count == 1)
+            /*if (control.geometricListControl.geometricDataGrid.SelectedItems.Count == 1)
             {
                 switch (AnnoTierStatic.Selected.AnnoList.Scheme.Type)
                 {
@@ -599,7 +599,7 @@ namespace ssi
                         control.geometricListControl.editTextBox.Text = item_r.Label;
                         break;
                 }
-            }
+            }*/
         }
 
         private void geometricListDelete(object sender, RoutedEventArgs e)

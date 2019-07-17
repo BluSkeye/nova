@@ -145,8 +145,8 @@ namespace ssi
 
             // Geometric
 
-            control.geometricListControl.editButton.Click += geometricListEdit_Click;
-            control.geometricListControl.editTextBox.GotMouseCapture += geometricListEdit_Focused;
+            //control.geometricListControl.editButton.Click += geometricListEdit_Click;
+            //control.geometricListControl.editTextBox.GotMouseCapture += geometricListEdit_Focused;
             control.geometricListControl.copyButton.Click += geometricListCopy_Click;
             control.geometricListControl.selectAllButton.Click += geometricListSelectAll_Click;
             control.geometricListControl.geometricDataGrid.SelectionChanged += geometricList_Selection;
