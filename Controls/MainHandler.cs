@@ -148,7 +148,17 @@ namespace ssi
             //control.geometricListControl.editButton.Click += geometricListEdit_Click;
             //control.geometricListControl.editTextBox.GotMouseCapture += geometricListEdit_Focused;
             control.geometricListControl.copyButton.Click += geometricListCopy_Click;
-            control.geometricListControl.selectAllButton.Click += geometricListSelectAll_Click;
+
+            control.geometricListControl.fullBodyRB.Click += geometricListRadioButtonChangeBody;
+            control.geometricListControl.lowerBodyRB.Click += geometricListRadioButtonChangeBody;
+            control.geometricListControl.partialBodyRB.Click += geometricListRadioButtonChangeBody;
+            control.geometricListControl.upperBodyRB.Click += geometricListRadioButtonChangeBody;
+
+            control.geometricListControl.fullyClothedRB.Click += geometricListRadioButtonChangeClothing;
+            control.geometricListControl.partialBodyRB.Click += geometricListRadioButtonChangeClothing;
+            control.geometricListControl.nakedRB.Click += geometricListRadioButtonChangeClothing;
+
+            // control.geometricListControl.selectAllButton.Click += geometricListSelectAll_Click;
             control.geometricListControl.geometricDataGrid.SelectionChanged += geometricList_Selection;
             control.geometricListControl.MenuItemDeleteClick.Click += geometricListDelete;
             control.geometricListControl.KeyDown += geometricKeyDown;

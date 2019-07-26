@@ -57,6 +57,10 @@ namespace ssi
                 {
                     sw.WriteLine("    <scheme name=\"" + this.Scheme.Name + "\" type=\"POINT\" sr=\"" + this.Scheme.SampleRate + "\" num=\"" + this.Scheme.NumberOfPoints + "\" color=\"" + this.Scheme.MinOrBackColor + "\" />");
                 }
+                else if (Scheme.Type == AnnoScheme.TYPE.RECTANGLE)
+                {
+                    sw.WriteLine("    <scheme name=\"" + this.Scheme.Name + "\" type=\"RECTANGLE\" sr=\"" + this.Scheme.SampleRate +  "\" />");
+                }
                 else if (Scheme.Type == AnnoScheme.TYPE.POLYGON)
                 {
                     sw.WriteLine("    <scheme name=\"" + this.Scheme.Name + "\" type=\"CONTINUOUS\" sr=\"" + this.Scheme.SampleRate + "\" num=\"" + this.Scheme.NumberOfPoints + "\" color=\"" + this.Scheme.MinOrBackColor + "\" />");
@@ -144,7 +148,7 @@ namespace ssi
                             output += e.Label + delimiter;
                             for (int i = 0; i < e.Rectangles.Count; ++i)
                             {
-                                output += '(' + e.Rectangles[i].Label + ':' + e.Rectangles[i].X1Coord + ':' + e.Rectangles[i].Y1Coord + ":" +  e.Rectangles[i].X2Coord + ':' + e.Rectangles[i].Y2Coord + ":" + e.Rectangles[i].Confidence + ')' + delimiter;
+                                output += '(' + e.Rectangles[i].Label + ':' + e.Rectangles[i].X1Coord + ':' + e.Rectangles[i].Y1Coord + ":" +  e.Rectangles[i].X2Coord + ':' + e.Rectangles[i].Y2Coord + ":" + e.Rectangles[i].BodyType + ":" + e.Rectangles[i].ClothingState + ":" + e.Rectangles[i].Confidence + ')' + delimiter;
                             }
                             sw.WriteLine(output + e.Confidence);
                         }
@@ -504,7 +508,10 @@ namespace ssi
                                     string rd = data[i].Replace("(", "");
                                     rd = rd.Replace(")", "");
                                     string[] rectangleData = rd.Split(':');
-                                    rectangles.Add(new RectangleListItem(int.Parse(rectangleData[1]), int.Parse(rectangleData[2]), int.Parse(rectangleData[3]), int.Parse(rectangleData[4]), rectangleData[0], double.Parse(rectangleData[5])));
+                                    rectangles.Add(new RectangleListItem(int.Parse(rectangleData[1]), int.Parse(rectangleData[2]), 
+                                                                         int.Parse(rectangleData[3]), int.Parse(rectangleData[4]), 
+                                                                         int.Parse(rectangleData[5]), int.Parse(rectangleData[6]),
+                                                                         rectangleData[0], double.Parse(rectangleData[7])));
                                 }
                                 AnnoListItem ali = new AnnoListItem(start, 1 / list.Scheme.SampleRate, frameLabel, "", list.Scheme.MinOrBackColor, frameConfidence, true, null, rectangles);
                                 list.Add(ali);

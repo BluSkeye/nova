@@ -13,12 +13,17 @@ namespace ssi
         private int Dx;
         private int Dy;
 
+        private int clothing_state = 0; // 0 fully clothed, 1 partially clothed, 2 naked
+        private int body_type = 0; // 0 full body, 1 upper body, 2 lower body, 3 partial body
+
         private int x1;
         private int y1;
         private int x2;
         private int y2;
         private string label;
         private double confidence;
+
+        private bool seletcted;
 
         public void UpdateADCoords()
         {
@@ -34,6 +39,37 @@ namespace ssi
             this.Ay = Ay;
             this.Dx = Dx;
             this.Dy = Dy;
+            OnPropertyChanged("Ax Ay Dx Dy");
+        }
+
+        public bool Selected
+        {
+            set
+            {
+                seletcted = value;
+                OnPropertyChanged("selected");
+            }
+            get { return seletcted; }
+        }
+
+        public int ClothingState
+        {
+            set
+            {
+                clothing_state = value;
+                OnPropertyChanged("clothing state");
+            }
+            get { return clothing_state; }
+        }
+
+        public int BodyType
+        {
+            set
+            {
+                body_type = value;
+                OnPropertyChanged("body type");
+            }
+            get { return body_type; }
         }
 
         public double XCoord
@@ -120,7 +156,7 @@ namespace ssi
             }
         }
 
-        public RectangleListItem(int x1, int y1, int x2, int y2, string label, double confidence)
+        public RectangleListItem(int x1, int y1, int x2, int y2, int body_type, int clothing_state, string label, double confidence)
         {
             this.x1 = x1;
             this.y1 = y1;
@@ -129,14 +165,14 @@ namespace ssi
             UpdateADCoords();
             this.label = label;
             this.confidence = confidence;
+            this.body_type = body_type;
+            this.clothing_state = clothing_state;
         }
 
         public class RectangleListItemComparer : IComparer<RectangleListItem>
         {
             int IComparer<RectangleListItem>.Compare(RectangleListItem a, RectangleListItem b)
             {
-
-
                 if (a.x1 + a.y1 + a.x2 + a.y2 < b.x1 + b.x2 + b.y1 + b.y2)
                 {
                     return -1;

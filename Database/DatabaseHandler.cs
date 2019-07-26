@@ -2507,9 +2507,11 @@ namespace ssi
                             int y1 = b["y1"].ToInt32();
                             int x2 = b["x2"].ToInt32();
                             int y2 = b["y2"].ToInt32();
+                            int body_type = b["body_type"].ToInt32();
+                            int clothing_state = b["clothing_type"].ToInt32();
                             string l = b["label"].ToString();
                             double c = b["conf"].ToDouble();
-                            RectangleListItem rli = new RectangleListItem(x1, y1, x2, y2, l, c);
+                            RectangleListItem rli = new RectangleListItem(x1, y1, x2, y2, body_type, clothing_state, l, c);
                             rl.Add(rli);
                         }
 
