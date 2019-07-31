@@ -213,19 +213,31 @@ namespace ssi
                                                       color);
                                 if (r.Selected)
                                 {
+                                    //A2
+                                    //  A----B
+                                    //  |    |
+                                    //  |    |
+                                    //  C----D
+                                    //         D2
+                                    
                                     //overlay.DrawRectangle(r.AxCoord, r.AyCoord, r.DxCoord, r.DyCoord, Color.FromRgb(0,0,0));
-                                    var width = 5;
-                                    overlay.FillRectangle(r.AxCoord - width, r.AyCoord - width,
-                                                          r.DxCoord + width, r.AyCoord - width, Colors.Red);
+                                    var width = 20;
+                                    var A2_x = r.AxCoord - width > 0 ? r.AxCoord - width : 0;
+                                    var A2_y = r.AyCoord - width > 0 ? r.AyCoord - width : 0;
+                                    var D2_x = r.DxCoord + width < overlay.Width ? r.DxCoord + width: overlay.PixelWidth;
+                                    var D2_y = r.DyCoord + width < overlay.Height ? r.DyCoord + width: overlay.PixelHeight;
+                                    
+                                    overlay.FillRectangle(A2_x, A2_y,
+                                                          D2_x, r.AyCoord, Colors.LimeGreen);
 
-                                    overlay.FillRectangle(r.DxCoord, r.AyCoord - width,
-                                                          r.DxCoord + width, r.DyCoord + width, Colors.Red);
+                                    overlay.FillRectangle(r.DxCoord, A2_y,
+                                                          D2_x, D2_y, Colors.LimeGreen);
 
-                                    overlay.FillRectangle(r.AxCoord - width, r.DyCoord,
-                                                          r.DxCoord + width, r.DyCoord + width, Colors.Red);
+                                    overlay.FillRectangle(A2_x, r.DyCoord,
+                                                          D2_x, D2_y, Colors.LimeGreen);
 
-                                    overlay.FillRectangle(r.AxCoord - width, r.AyCoord - width,
-                                                          r.AxCoord, r.DyCoord + width, Colors.Red);
+                                    overlay.FillRectangle(A2_x, A2_y,
+                                                          r.AxCoord, D2_y, Colors.LimeGreen);
 
                                 }
                             }
@@ -346,8 +358,31 @@ namespace ssi
                 }
                 else if (AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.RECTANGLE)
                 {
+                    if (AnnoTierStatic.Selected != null &&
+                        AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.RECTANGLE &&
+                        control.annoListControl.annoDataGrid.SelectedItem != null &&
+                        control.geometricListControl.geometricDataGrid.SelectedItem != null)
+                    {
+                        double deltaX = x - RightHeldPos[0];
+                        double deltaY = y - RightHeldPos[1];
 
-                   
+                        RightHeldPos = new double[] { x, y };
+                        AnnoListItem item = (AnnoListItem)control.annoListControl.annoDataGrid.SelectedItem;
+
+                        foreach (RectangleListItem rli in control.geometricListControl.geometricDataGrid.SelectedItems)
+                        {
+                            rli.X1Coord += Convert.ToInt32(deltaX);
+                            rli.X2Coord += Convert.ToInt32(deltaX);
+                            rli.Y1Coord += Convert.ToInt32(deltaY);
+                            rli.Y2Coord += Convert.ToInt32(deltaY);
+
+                            rli.UpdateADCoords();
+                        }
+                        geometricTableUpdate();
+                        int pos = control.annoListControl.annoDataGrid.SelectedIndex;
+                        geometricOverlayUpdate(item, AnnoScheme.TYPE.RECTANGLE, pos);
+                    }
+
                 }
             }
             else if (LeftHeld)
@@ -452,7 +487,10 @@ namespace ssi
                     }
                     else
                     {
-                        RectangleListItem rectangle = new RectangleListItem((int)x, (int)y, (int)x + 1, (int)y + 1, 0, 0, label, 1);
+                        control.geometricListControl.fullyClothedRB.IsChecked = true;
+                        control.geometricListControl.fullBodyRB.IsChecked = true;
+                        control.geometricListControl.maleRB.IsChecked = true;
+                        RectangleListItem rectangle = new RectangleListItem((int)x, (int)y, (int)x + 1, (int)y + 1, 0, 0, 0, label, 1);
                         rectangles.Add(rectangle);
                     }
                     
@@ -542,7 +580,39 @@ namespace ssi
                         control.geometricListControl.partialBodyRB.IsChecked = true;
                         break;
                 }
+                switch (rectangle.Gender)
+                {//  0 male, 1 female
+                    case 0:
+                        control.geometricListControl.maleRB.IsChecked = true;
+                        break;
+                    case 1:
+                        control.geometricListControl.femaleRb.IsChecked = true;
+                        break;
+                }
+            }
+        }
 
+        private void geometricListRadioButtonChangeGender(object sender, RoutedEventArgs e)
+        {
+            if (control.annoListControl.annoDataGrid.SelectedItem != null &&
+                AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.RECTANGLE &&
+                control.geometricListControl.geometricDataGrid.SelectedItems.Count != 0)
+            {
+                AnnoListItem item = (AnnoListItem)control.annoListControl.annoDataGrid.SelectedItems[0];
+                RectangleList rectangles = (RectangleList)item.Rectangles;
+                foreach (RectangleListItem rectangle in control.geometricListControl.geometricDataGrid.SelectedItems)
+                {
+                    // 0 full body, 1 upper body, 2 lower body, 3 partial body
+                    if (control.geometricListControl.maleRB.IsChecked == true)
+                    {
+                        rectangle.Gender = 0;
+                    }
+                    else if (control.geometricListControl.femaleRb.IsChecked == true)
+                    {
+                        rectangle.Gender = 1;
+
+                    }
+                }
             }
         }
 
@@ -642,7 +712,7 @@ namespace ssi
                                     RectangleListItem rli = new RectangleListItem((int)item.Rectangles[j].X1Coord, (int)item.Rectangles[j].Y1Coord, 
                                                                                   (int)item.Rectangles[j].X2Coord, (int)item.Rectangles[j].Y2Coord,
                                                                                   (int)item.Rectangles[j].BodyType, (int)item.Rectangles[j].ClothingState,
-                                                                                  item.Rectangles[j].Label, 0.0);
+                                                                                  (int)item.Rectangles[j].Gender, item.Rectangles[j].Label, 0.0);
                                     list[i].Rectangles.Add(rli);
                                     added = true;
                                 }
@@ -659,6 +729,7 @@ namespace ssi
             }
         }
 
+        private System.Collections.IList previous_selected_rl = null;
         private void geometricList_Selection(object sender, SelectionChangedEventArgs e)
         {            
             if (control.annoListControl.annoDataGrid.SelectedItem != null)
@@ -671,6 +742,17 @@ namespace ssi
                 }
                 else if (item.Rectangles != null)
                 {
+                    if (previous_selected_rl == control.geometricListControl.geometricDataGrid.SelectedItems)
+                    {
+                        //unselect currently selected
+                        previous_selected_rl = null;
+                        control.geometricListControl.geometricDataGrid.SelectedItems.Clear();
+                        return;
+                    }
+                    else
+                    {
+                        previous_selected_rl = control.geometricListControl.geometricDataGrid.SelectedItems;
+                    }
                     foreach (RectangleListItem rectangle in control.geometricListControl.geometricDataGrid.Items)
                     {
                         rectangle.Selected = false;
@@ -811,7 +893,7 @@ namespace ssi
                     {
                         AnnoListItem item = (AnnoListItem)control.annoListControl.annoDataGrid.SelectedItem;
                         RectangleList rectangles = (RectangleList)item.Rectangles;
-                        RectangleListItem rectangle = new RectangleListItem(-1, -1, -1, -1, 0, 0, (rectangles.Count+1).ToString(), 0);
+                        RectangleListItem rectangle = new RectangleListItem(-1, -1, -1, -1, 0, 0, 0, (rectangles.Count+1).ToString(), 0);
                         rectangles.Add(rectangle);
                         geometricTableUpdate();
                         // add functionality to select last in geometric list

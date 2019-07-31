@@ -148,7 +148,7 @@ namespace ssi
                             output += e.Label + delimiter;
                             for (int i = 0; i < e.Rectangles.Count; ++i)
                             {
-                                output += '(' + e.Rectangles[i].Label + ':' + e.Rectangles[i].X1Coord + ':' + e.Rectangles[i].Y1Coord + ":" +  e.Rectangles[i].X2Coord + ':' + e.Rectangles[i].Y2Coord + ":" + e.Rectangles[i].BodyType + ":" + e.Rectangles[i].ClothingState + ":" + e.Rectangles[i].Confidence + ')' + delimiter;
+                                output += '(' + e.Rectangles[i].Label + ':' + e.Rectangles[i].X1Coord + ':' + e.Rectangles[i].Y1Coord + ":" +  e.Rectangles[i].X2Coord + ':' + e.Rectangles[i].Y2Coord + ":" + e.Rectangles[i].BodyType + ":" + e.Rectangles[i].ClothingState + ":" + e.Rectangles[i].Gender + ":" + e.Rectangles[i].Confidence + ')' + delimiter;
                             }
                             sw.WriteLine(output + e.Confidence);
                         }
@@ -511,7 +511,8 @@ namespace ssi
                                     rectangles.Add(new RectangleListItem(int.Parse(rectangleData[1]), int.Parse(rectangleData[2]), 
                                                                          int.Parse(rectangleData[3]), int.Parse(rectangleData[4]), 
                                                                          int.Parse(rectangleData[5]), int.Parse(rectangleData[6]),
-                                                                         rectangleData[0], double.Parse(rectangleData[7])));
+                                                                         int.Parse(rectangleData[7]),
+                                                                         rectangleData[0], double.Parse(rectangleData[8])));
                                 }
                                 AnnoListItem ali = new AnnoListItem(start, 1 / list.Scheme.SampleRate, frameLabel, "", list.Scheme.MinOrBackColor, frameConfidence, true, null, rectangles);
                                 list.Add(ali);

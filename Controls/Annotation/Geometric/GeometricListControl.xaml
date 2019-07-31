@@ -70,6 +70,7 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <RadioButton x:Name="fullBodyRB"    Width="Auto" Grid.Column="0" Grid.Row="0" Height="25" Margin="5,0,5,0" GroupName="bodyType" IsChecked="True">Full Body</RadioButton>
@@ -81,8 +82,11 @@
             <RadioButton x:Name="partiallyClothedRB"    Width="Auto" Grid.Column="1" Grid.Row="1" Height="25" Margin="5,0,5,0" GroupName="clothingType">Partially Clothed</RadioButton>
             <RadioButton x:Name="nakedRB"               Width="Auto" Grid.Column="2" Grid.Row="1" Height="25" Margin="5,0,5,0" GroupName="clothingType">Naked</RadioButton>
 
-            <Button Name="selectAllButton" Width="Auto" Grid.Column="0" Grid.Row="2" Height="25" Margin="5,0,5,0">Select All</Button>
-            <Button Name="copyButton" Width="Auto" Grid.Column="4" Grid.Row="2" Height="25" Margin="7,5,5,5">Copy all to next frame</Button>
+            <RadioButton x:Name="maleRB"                 Width="Auto" Grid.Column="0" Grid.Row="2" Height="25" Margin="5,0,5,0" GroupName="gender" IsChecked="True">Male</RadioButton>
+            <RadioButton x:Name="femaleRb"               Width="Auto" Grid.Column="1" Grid.Row="2" Height="25" Margin="5,0,5,0" GroupName="gender">Female</RadioButton>
+
+            <Button Name="selectAllButton" Width="Auto" Grid.Column="0" Grid.Row="3" Height="25" Margin="5,0,5,0">Select All</Button>
+            <Button Name="copyButton" Width="Auto" Grid.Column="4" Grid.Row="3" Height="25" Margin="7,5,5,5">Copy all to next frame</Button>
         </Grid>
     </Grid>
 </UserControl>

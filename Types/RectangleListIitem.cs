@@ -15,6 +15,7 @@ namespace ssi
 
         private int clothing_state = 0; // 0 fully clothed, 1 partially clothed, 2 naked
         private int body_type = 0; // 0 full body, 1 upper body, 2 lower body, 3 partial body
+        private int gender = 0; // 0 male, 1 female
 
         private int x1;
         private int y1;
@@ -50,6 +51,16 @@ namespace ssi
                 OnPropertyChanged("selected");
             }
             get { return seletcted; }
+        }
+
+        public int Gender
+        {
+            set
+            {
+                gender = value;
+                OnPropertyChanged("gender");
+            }
+            get { return gender; }
         }
 
         public int ClothingState
@@ -156,7 +167,7 @@ namespace ssi
             }
         }
 
-        public RectangleListItem(int x1, int y1, int x2, int y2, int body_type, int clothing_state, string label, double confidence)
+        public RectangleListItem(int x1, int y1, int x2, int y2, int body_type, int clothing_state, int gender, string label, double confidence)
         {
             this.x1 = x1;
             this.y1 = y1;
@@ -167,6 +178,7 @@ namespace ssi
             this.confidence = confidence;
             this.body_type = body_type;
             this.clothing_state = clothing_state;
+            this.gender = gender;
         }
 
         public class RectangleListItemComparer : IComparer<RectangleListItem>

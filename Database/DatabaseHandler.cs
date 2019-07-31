@@ -2022,6 +2022,9 @@ namespace ssi
                         singlesinglerectangle.Add(new BsonElement("y1", annoList[i].Rectangles[j].AyCoord));
                         singlesinglerectangle.Add(new BsonElement("x2", annoList[i].Rectangles[j].DxCoord));
                         singlesinglerectangle.Add(new BsonElement("y2", annoList[i].Rectangles[j].DyCoord));
+                        singlesinglerectangle.Add(new BsonElement("body_type", annoList[i].Rectangles[j].BodyType));
+                        singlesinglerectangle.Add(new BsonElement("clothing_type", annoList[i].Rectangles[j].ClothingState));
+                        singlesinglerectangle.Add(new BsonElement("gender", annoList[i].Rectangles[j].Gender));
                         singlesinglerectangle.Add(new BsonElement("conf", annoList[i].Rectangles[j].Confidence));
 
                         Rectangles.Add(singlesinglerectangle);
@@ -2509,9 +2512,10 @@ namespace ssi
                             int y2 = b["y2"].ToInt32();
                             int body_type = b["body_type"].ToInt32();
                             int clothing_state = b["clothing_type"].ToInt32();
+                            int gender = b["gender"].ToInt32();
                             string l = b["label"].ToString();
                             double c = b["conf"].ToDouble();
-                            RectangleListItem rli = new RectangleListItem(x1, y1, x2, y2, body_type, clothing_state, l, c);
+                            RectangleListItem rli = new RectangleListItem(x1, y1, x2, y2, body_type, clothing_state, gender, l, c);
                             rl.Add(rli);
                         }
 
