@@ -45,6 +45,7 @@ namespace ssi
 
         double GetSampleRate();
 
+
         string GetFilepath();
 
         string GetDirectory();

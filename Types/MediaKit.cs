@@ -186,6 +186,16 @@ namespace ssi
             return sampleRate;
         }
 
+        public double GetHeight()
+        {
+            return ActualHeight;
+        }
+
+        public double GetWidth()
+        {
+            return ActualWidth;
+        }
+
         public UIElement GetView()
         {
             return grid;

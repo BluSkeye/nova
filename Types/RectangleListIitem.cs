@@ -25,6 +25,19 @@ namespace ssi
         private double confidence;
 
         private bool seletcted;
+        private int area;
+
+
+        private void UpdateArea()
+        {
+            int width = Dx - Ax;
+            int height = Dy - Ay;
+            area = width * height;
+        }
+        public int Area
+        {
+            get{ return area; }
+        }
 
         public void UpdateADCoords()
         {
@@ -40,6 +53,7 @@ namespace ssi
             this.Ay = Ay;
             this.Dx = Dx;
             this.Dy = Dy;
+            UpdateArea();
             OnPropertyChanged("Ax Ay Dx Dy");
         }
 

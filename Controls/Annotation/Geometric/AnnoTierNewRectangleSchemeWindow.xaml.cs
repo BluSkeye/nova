@@ -44,7 +44,7 @@ namespace ssi
 
             scheme.MinOrBackColor = System.Windows.Media.Color.FromRgb(0,0,0);
             
-            scheme.MaxOrForeColor = System.Windows.Media.Color.FromRgb(0, 0, 0); 
+            scheme.MaxOrForeColor = System.Windows.Media.Color.FromRgb(0, 0, 0);
 
             Close();
         }

@@ -152,10 +152,24 @@ namespace ssi
             else if (item.Rectangles != null && item.Rectangles.Count > 0)
             {
                 setRectangleList(item.Rectangles);
+
+                foreach (RectangleListItem rectangle in control.geometricListControl.geometricDataGrid.Items)
+                {
+                    rectangle.Selected = false;
+                }
+
+                if (item.Rectangles.Count == 1)
+                {
+                    RectangleListItem rectangle = (RectangleListItem) control.geometricListControl.geometricDataGrid.Items[0];
+                    if (rectangle.AxCoord == -1 && rectangle.AyCoord == -1)
+                    {
+                        control.geometricListControl.geometricDataGrid.SelectedIndex = 0;
+                    }
+                }
+
                 geometricOverlayUpdate(item, AnnoScheme.TYPE.RECTANGLE, pos);
             }
         }
-
 
         public void geometricOverlayUpdate(AnnoListItem item, AnnoScheme.TYPE type, int pos = -1)
         {
@@ -257,9 +271,7 @@ namespace ssi
             }
 
             
-        }
-
-        
+        }     
 
         private static bool rightHeld;
         private static bool leftHeld;
@@ -430,12 +442,30 @@ namespace ssi
                     AnnoListItem item = (AnnoListItem)control.annoListControl.annoDataGrid.SelectedItem;
                     if (control.geometricListControl.geometricDataGrid.SelectedItems.Count > 1) return;
 
+
+
                     RectangleList rectangles = (RectangleList)item.Rectangles;
+                    RectangleListItem prev_rectangle = rectangles.Last();
                     RectangleListItem rectangle = rectangles.Last();
                     rectangle.X2Coord = (int)x;
                     rectangle.Y2Coord = (int)y;
                     rectangle.Confidence = 1;
                     rectangle.UpdateADCoords();
+                    rectangle.Selected = true;
+
+                    if (rectangle.Area < min_area)
+                    {
+                        if (prev_rectangle.Area < min_area)
+                        {
+                            // rectangles.Remove(rectangle);
+                            control.geometricListControl.geometricDataGrid.SelectedIndex = rectangles.IndexOf(rectangle);
+                            geometricListDelete(null, null);
+                        }
+                        else
+                        {
+                            rectangles[rectangles.IndexOf(rectangle)] = prev_rectangle;
+                        }
+                    }
                     int pos = control.annoListControl.annoDataGrid.SelectedIndex;
                     geometricOverlayUpdate(item, AnnoScheme.TYPE.RECTANGLE, pos);
                     geometricTableUpdate();
@@ -444,7 +474,7 @@ namespace ssi
 
             
         }
-
+        private int min_area = 400;
         void OnMediaMouseDown(IMedia media, double x, double y)
         {
             if (Mouse.LeftButton == MouseButtonState.Pressed)
@@ -483,7 +513,6 @@ namespace ssi
                         rectangle.X2Coord = (int)x;
                         rectangle.Y2Coord = (int)y;
                         rectangle.UpdateADCoords();
-                        control.geometricListControl.geometricDataGrid.SelectedItem = null;
                     }
                     else
                     {
@@ -491,7 +520,9 @@ namespace ssi
                         control.geometricListControl.fullBodyRB.IsChecked = true;
                         control.geometricListControl.maleRB.IsChecked = true;
                         RectangleListItem rectangle = new RectangleListItem((int)x, (int)y, (int)x + 1, (int)y + 1, 0, 0, 0, label, 1);
+                        rectangle.Selected = true;
                         rectangles.Add(rectangle);
+                        control.geometricListControl.geometricDataGrid.SelectedIndex = rectangles.IndexOf(rectangle);
                     }
                     
                     int pos = control.annoListControl.annoDataGrid.SelectedIndex;
@@ -538,57 +569,28 @@ namespace ssi
             control.geometricListControl.editTextBox.SelectAll();
         }*/
 
+        
+        private void geometricListDone_Click(object sender, RoutedEventArgs e)
+        {
+            if (control.geometricListControl.geometricDataGrid.SelectedItems.Count > 0)
+            {
+                control.geometricListControl.geometricDataGrid.SelectedItems.Clear();
+                if (control.geometricListControl.geometricDataGrid.Items.Count == 1)
+                {
+                    RectangleListItem rectangle = (RectangleListItem)control.geometricListControl.geometricDataGrid.Items[0];
+                    if (rectangle.AxCoord == -1 && rectangle.AyCoord == -1)
+                    {
+                        control.geometricListControl.geometricDataGrid.SelectedIndex = 0;
+                    }
+                }
+            }
+        }
+
         private void geometricListSelectAll_Click(object sender, RoutedEventArgs e)
         {
             if (control.geometricListControl.geometricDataGrid.Items.Count > 0)
             {
                 control.geometricListControl.geometricDataGrid.SelectAll();
-            }
-        }
-
-        private void geometricList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.RECTANGLE &&
-                control.geometricListControl.geometricDataGrid.SelectedItems.Count == 1)
-            {
-                AnnoListItem item = (AnnoListItem)control.annoListControl.annoDataGrid.SelectedItems[0];
-                RectangleListItem rectangle = (RectangleListItem)control.geometricListControl.geometricDataGrid.SelectedItems[0];
-                switch (rectangle.ClothingState)
-                {// 0 full clothed, 1 partially clothed, 2 naked
-                    case 0:
-                        control.geometricListControl.fullyClothedRB.IsChecked = true;
-                        break;
-                    case 1:
-                        control.geometricListControl.partiallyClothedRB.IsChecked = true;
-                        break;
-                    case 2:
-                        control.geometricListControl.nakedRB.IsChecked = true;
-                        break;
-                }
-                switch (rectangle.BodyType)
-                {//  0 full body, 1 upper body, 2 lower body, 3 partial body
-                    case 0:
-                        control.geometricListControl.fullBodyRB.IsChecked = true;
-                        break;
-                    case 1:
-                        control.geometricListControl.upperBodyRB.IsChecked = true;
-                        break;
-                    case 2:
-                        control.geometricListControl.lowerBodyRB.IsChecked = true;
-                        break;
-                    case 3:
-                        control.geometricListControl.partialBodyRB.IsChecked = true;
-                        break;
-                }
-                switch (rectangle.Gender)
-                {//  0 male, 1 female
-                    case 0:
-                        control.geometricListControl.maleRB.IsChecked = true;
-                        break;
-                    case 1:
-                        control.geometricListControl.femaleRb.IsChecked = true;
-                        break;
-                }
             }
         }
 
@@ -694,6 +696,7 @@ namespace ssi
                                         list[i].Rectangles[k].Y2Coord = (int)item.Rectangles[j].Y2Coord;
                                         list[i].Rectangles[k].Confidence = 0.0;
                                         list[i].Rectangles[k].UpdateADCoords();
+                                        list[i].Rectangles[k].Selected = true;
                                         added = true;
                                     }
                                     else if (list[i].Rectangles[k].Label == item.Rectangles[j].Label)
@@ -712,7 +715,8 @@ namespace ssi
                                     RectangleListItem rli = new RectangleListItem((int)item.Rectangles[j].X1Coord, (int)item.Rectangles[j].Y1Coord, 
                                                                                   (int)item.Rectangles[j].X2Coord, (int)item.Rectangles[j].Y2Coord,
                                                                                   (int)item.Rectangles[j].BodyType, (int)item.Rectangles[j].ClothingState,
-                                                                                  (int)item.Rectangles[j].Gender, item.Rectangles[j].Label, 0.0);
+                                                                                  (int)item.Rectangles[j].Gender, 
+                                                                                  item.Rectangles[j].Label, 0.0);
                                     list[i].Rectangles.Add(rli);
                                     added = true;
                                 }
@@ -742,17 +746,6 @@ namespace ssi
                 }
                 else if (item.Rectangles != null)
                 {
-                    if (previous_selected_rl == control.geometricListControl.geometricDataGrid.SelectedItems)
-                    {
-                        //unselect currently selected
-                        previous_selected_rl = null;
-                        control.geometricListControl.geometricDataGrid.SelectedItems.Clear();
-                        return;
-                    }
-                    else
-                    {
-                        previous_selected_rl = control.geometricListControl.geometricDataGrid.SelectedItems;
-                    }
                     foreach (RectangleListItem rectangle in control.geometricListControl.geometricDataGrid.Items)
                     {
                         rectangle.Selected = false;
@@ -785,6 +778,15 @@ namespace ssi
                                 break;
                             case 3:
                                 control.geometricListControl.partialBodyRB.IsChecked = true;
+                                break;
+                        }
+                        switch (rectangle.Gender)
+                        {//  0 male, 1 female
+                            case 0:
+                                control.geometricListControl.maleRB.IsChecked = true;
+                                break;
+                            case 1:
+                                control.geometricListControl.femaleRb.IsChecked = true;
                                 break;
                         }
                         rectangle.Selected = true;
@@ -847,6 +849,13 @@ namespace ssi
                     rectangles.RemoveAt(ir);
                 }
 
+                if (rectangles.Count == 0)
+                {
+                    rectangles.Add(new RectangleListItem(-1, -1, -1, -1, 0, 0, 0, (rectangles.Count + 1).ToString(), 0));
+                    control.geometricListControl.geometricDataGrid.SelectedIndex = 0;
+                }
+
+
                 geometricTableUpdate();
                 int pos = control.annoListControl.annoDataGrid.SelectedIndex;
                 geometricOverlayUpdate(item, AnnoScheme.TYPE.RECTANGLE, pos);
@@ -885,19 +894,40 @@ namespace ssi
                         geometricTableUpdate();
                     }
                 }
-                else if (e.Key == Key.R)
+            }
+
+            if (e.Key == Key.R)
+            {
+                if (AnnoTierStatic.Selected != null &&
+                    AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.RECTANGLE &&
+                    control.annoListControl.annoDataGrid.SelectedItem != null)
                 {
-                    if (AnnoTierStatic.Selected != null &&
-                        AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.RECTANGLE &&
-                        control.annoListControl.annoDataGrid.SelectedItem != null)
-                    {
-                        AnnoListItem item = (AnnoListItem)control.annoListControl.annoDataGrid.SelectedItem;
-                        RectangleList rectangles = (RectangleList)item.Rectangles;
-                        RectangleListItem rectangle = new RectangleListItem(-1, -1, -1, -1, 0, 0, 0, (rectangles.Count+1).ToString(), 0);
-                        rectangles.Add(rectangle);
-                        geometricTableUpdate();
-                        // add functionality to select last in geometric list
-                    }
+                    AnnoListItem item = (AnnoListItem)control.annoListControl.annoDataGrid.SelectedItem;
+                    RectangleList rectangles = (RectangleList)item.Rectangles;
+                    RectangleListItem rectangle = new RectangleListItem(-1, -1, -1, -1, 0, 0, 0, (rectangles.Count+1).ToString(), 0);
+                    rectangles.Add(rectangle);
+                    geometricTableUpdate();
+                    // add functionality to select last in geometric list
+                }
+            }
+            else if (e.Key == Key.D)
+            {
+                if (AnnoTierStatic.Selected != null &&
+                    AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.RECTANGLE &&
+                    control.annoListControl.annoDataGrid.SelectedItem != null)
+                {
+                    control.geometricListControl.geometricDataGrid.SelectedItems.Clear();
+                    return;
+                }
+            }
+            else if (e.Key == Key.Delete)
+            {
+                if (AnnoTierStatic.Selected != null &&
+                    AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.RECTANGLE &&
+                    control.annoListControl.annoDataGrid.SelectedItem != null)
+                {
+                    geometricListDelete(sender, e);
+                    return;
                 }
             }
         }
@@ -938,7 +968,7 @@ namespace ssi
                     {
                         rectangle.ClothingState = 0;
                     }
-                    else if (control.geometricListControl.partialBodyRB.IsChecked == true)
+                    else if (control.geometricListControl.partiallyClothedRB.IsChecked == true)
                     {
                         rectangle.ClothingState = 1;
                     }

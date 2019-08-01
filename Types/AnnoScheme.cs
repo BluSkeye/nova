@@ -42,6 +42,8 @@ namespace ssi
             MinScore = 0;
             MaxScore = 1;
             SampleRate = 1;
+            Width = 1;
+            Height = 1;
             MinOrBackColor = Defaults.Colors.Background;
             MaxOrForeColor = Defaults.Colors.Foreground;
         }
@@ -66,6 +68,9 @@ namespace ssi
         }
 
         public double MinScore { get; set; }
+
+        public int Height { get; set; }
+        public int Width { get; set; }
 
         public double MaxScore { get; set; }
 

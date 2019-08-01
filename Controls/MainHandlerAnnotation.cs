@@ -406,25 +406,28 @@ namespace ssi
         public void addNewAnnotationFile()
         {
           
-                double defaultSr = 25.0;
-                foreach (IMedia m in mediaList)
+            double defaultSr = 25.0;
+            foreach (IMedia m in mediaList)
+            {
+                if (m.GetMediaType() == MediaType.VIDEO)
                 {
-                    if (m.GetMediaType() == MediaType.VIDEO)
-                    {
-                        defaultSr = m.GetSampleRate();
-                        break;
-                    }
+                    defaultSr = m.GetSampleRate();
+                    break;
                 }
+            }
 
-                AnnoScheme scheme = AddSchemeDialog(defaultSr);
-                if (scheme != null)
-                {
-                    AnnoList annoList = new AnnoList() { Scheme = scheme };
-                    annoList.Source.StoreToFile = true;
-                    annoList.Meta.Annotator = Properties.Settings.Default.Annotator;
-                    addAnnoTier(annoList);
-                }
-            
+            AnnoScheme scheme = AddSchemeDialog(defaultSr);
+            if (scheme != null)
+            {
+                MediaKit video = (MediaKit)mediaList.GetFirstVideo();
+
+                scheme.Height = (int)video.ActualHeight;
+                scheme.Width= (int)video.ActualWidth;
+                AnnoList annoList = new AnnoList() { Scheme = scheme };
+                annoList.Source.StoreToFile = true;
+                annoList.Meta.Annotator = Properties.Settings.Default.Annotator;
+                addAnnoTier(annoList);
+            }
            
         }
 

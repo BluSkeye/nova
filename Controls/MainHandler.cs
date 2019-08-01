@@ -155,13 +155,14 @@ namespace ssi
             control.geometricListControl.upperBodyRB.Click += geometricListRadioButtonChangeBody;
 
             control.geometricListControl.fullyClothedRB.Click += geometricListRadioButtonChangeClothing;
-            control.geometricListControl.partialBodyRB.Click += geometricListRadioButtonChangeClothing;
+            control.geometricListControl.partiallyClothedRB.Click += geometricListRadioButtonChangeClothing;
             control.geometricListControl.nakedRB.Click += geometricListRadioButtonChangeClothing;
 
             control.geometricListControl.maleRB.Click += geometricListRadioButtonChangeGender;
             control.geometricListControl.femaleRb.Click += geometricListRadioButtonChangeGender;
 
-            // control.geometricListControl.selectAllButton.Click += geometricListSelectAll_Click;
+            control.geometricListControl.selectAllButton.Click += geometricListSelectAll_Click;
+            control.geometricListControl.doneButton.Click += geometricListDone_Click;
             control.geometricListControl.geometricDataGrid.SelectionChanged += geometricList_Selection;
             control.geometricListControl.MenuItemDeleteClick.Click += geometricListDelete;
             control.geometricListControl.KeyDown += geometricKeyDown;
@@ -525,6 +526,7 @@ namespace ssi
                 control.Cursor = Cursors.Wait;
                 loadMultipleFilesOrDirectory(filenames);
                 control.Cursor = Cursors.Arrow;
+                control.annoListControl.annoDataGrid.SelectedIndex = 0;
             }
         }
 

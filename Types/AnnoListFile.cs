@@ -55,11 +55,17 @@ namespace ssi
 
                 else if (Scheme.Type == AnnoScheme.TYPE.POINT)
                 {
-                    sw.WriteLine("    <scheme name=\"" + this.Scheme.Name + "\" type=\"POINT\" sr=\"" + this.Scheme.SampleRate + "\" num=\"" + this.Scheme.NumberOfPoints + "\" color=\"" + this.Scheme.MinOrBackColor + "\" />");
+                    //sw.WriteLine("    <scheme name=\"" + this.Scheme.Name + "\" type=\"POINT\" sr=\"" + this.Scheme.SampleRate + "\" num=\"" + this.Scheme.NumberOfPoints + "\" color=\"" + this.Scheme.MinOrBackColor + "\" />");
+                    sw.WriteLine("    <scheme name=\"" + this.Scheme.Name + "\" type=\"POINT\" sr=\"" + this.Scheme.SampleRate + 
+                                      "\" num=\"" + this.Scheme.NumberOfPoints + "\" color=\"" + this.Scheme.MinOrBackColor + 
+                                      "\" width=\"" + this.Scheme.Width + "\" height=\"" + this.Scheme.Height +      
+                                                         "\" />");
                 }
                 else if (Scheme.Type == AnnoScheme.TYPE.RECTANGLE)
                 {
-                    sw.WriteLine("    <scheme name=\"" + this.Scheme.Name + "\" type=\"RECTANGLE\" sr=\"" + this.Scheme.SampleRate +  "\" />");
+                    sw.WriteLine("    <scheme name=\"" + this.Scheme.Name + "\" type=\"RECTANGLE\" sr=\"" + this.Scheme.SampleRate +
+                                      "\" width=\"" + this.Scheme.Width + "\" height=\"" + this.Scheme.Height +
+                                      "\" />");
                 }
                 else if (Scheme.Type == AnnoScheme.TYPE.POLYGON)
                 {
@@ -135,7 +141,7 @@ namespace ssi
                             output += e.Label + delimiter;
                             for (int i = 0; i < e.Points.Count; ++i)
                             {
-                                output += '(' + e.Points[i].Label + ':' + e.Points[i].XCoord + ':' + e.Points[i].YCoord + ":" + e.Points[i].Confidence + ')' + delimiter;
+                                output += '(' + e.Points[i].Label + ':' + ((double)e.Points[i].XCoord / Scheme.Width) + ':' + ((double)e.Points[i].YCoord / Scheme.Height) + ":" + e.Points[i].Confidence + ')' + delimiter;
                             }
                             sw.WriteLine(output + e.Confidence);
                         }
@@ -148,7 +154,10 @@ namespace ssi
                             output += e.Label + delimiter;
                             for (int i = 0; i < e.Rectangles.Count; ++i)
                             {
-                                output += '(' + e.Rectangles[i].Label + ':' + e.Rectangles[i].X1Coord + ':' + e.Rectangles[i].Y1Coord + ":" +  e.Rectangles[i].X2Coord + ':' + e.Rectangles[i].Y2Coord + ":" + e.Rectangles[i].BodyType + ":" + e.Rectangles[i].ClothingState + ":" + e.Rectangles[i].Gender + ":" + e.Rectangles[i].Confidence + ')' + delimiter;
+                                output += '(' + e.Rectangles[i].Label + ':' + ((double)e.Rectangles[i].X1Coord / Scheme.Width) + ':' + ((double)e.Rectangles[i].Y1Coord / Scheme.Height) +
+                                                                        ":" + ((double)e.Rectangles[i].X2Coord / Scheme.Width) + ':' + ((double)e.Rectangles[i].Y2Coord / Scheme.Height) + 
+                                                                        ":" + e.Rectangles[i].BodyType + ":" + e.Rectangles[i].ClothingState + 
+                                                                        ":" + e.Rectangles[i].Gender + ":" + e.Rectangles[i].Confidence + ')' + delimiter;
                             }
                             sw.WriteLine(output + e.Confidence);
                         }
@@ -411,11 +420,15 @@ namespace ssi
                          list.Scheme.Type == AnnoScheme.TYPE.SEGMENTATION)
                 {
                     list.Scheme.SampleRate = double.Parse(scheme.Attributes["sr"].Value);
-                    list.Scheme.NumberOfPoints = int.Parse(scheme.Attributes["num"].Value);                    
+                    list.Scheme.NumberOfPoints = int.Parse(scheme.Attributes["num"].Value);
+                    list.Scheme.Width = int.Parse(scheme.Attributes["width"].Value);
+                    list.Scheme.Height = int.Parse(scheme.Attributes["height"].Value);
                 }
                 else if (list.Scheme.Type == AnnoScheme.TYPE.RECTANGLE)
                 {
                     list.Scheme.SampleRate = double.Parse(scheme.Attributes["sr"].Value);
+                    list.Scheme.Width = int.Parse(scheme.Attributes["width"].Value);
+                    list.Scheme.Height = int.Parse(scheme.Attributes["height"].Value);
                 }
 
                 if (File.Exists(filepath + "~"))
@@ -492,7 +505,7 @@ namespace ssi
                                     string pd = data[i].Replace("(", "");
                                     pd = pd.Replace(")", "");
                                     string[] pointData = pd.Split(':');
-                                    points.Add(new PointListItem(double.Parse(pointData[1]), double.Parse(pointData[2]), pointData[0], double.Parse(pointData[3])));
+                                    points.Add(new PointListItem(double.Parse(pointData[1]) * list.Scheme.Width, double.Parse(pointData[2]) * list.Scheme.Height, pointData[0], double.Parse(pointData[3])));
                                 }
                                 AnnoListItem ali = new AnnoListItem(start, 1 / list.Scheme.SampleRate, frameLabel, "", list.Scheme.MinOrBackColor, frameConfidence, true, points);
                                 list.Add(ali);
@@ -508,8 +521,8 @@ namespace ssi
                                     string rd = data[i].Replace("(", "");
                                     rd = rd.Replace(")", "");
                                     string[] rectangleData = rd.Split(':');
-                                    rectangles.Add(new RectangleListItem(int.Parse(rectangleData[1]), int.Parse(rectangleData[2]), 
-                                                                         int.Parse(rectangleData[3]), int.Parse(rectangleData[4]), 
+                                    rectangles.Add(new RectangleListItem((int)(double.Parse(rectangleData[1]) * list.Scheme.Width), (int)(double.Parse(rectangleData[2]) * list.Scheme.Height),
+                                                                         (int)(double.Parse(rectangleData[3]) * list.Scheme.Width), (int)(double.Parse(rectangleData[4]) * list.Scheme.Height), 
                                                                          int.Parse(rectangleData[5]), int.Parse(rectangleData[6]),
                                                                          int.Parse(rectangleData[7]),
                                                                          rectangleData[0], double.Parse(rectangleData[8])));
