@@ -97,16 +97,6 @@ namespace ssi
             get { return body_type; }
         }
 
-        public double XCoord
-        {
-            get { return Ax; }
-        }
-
-        public double YCoord
-        {
-            get { return Ay; }
-        }
-
         public int AxCoord
         {
             get { return Ax; }
@@ -179,6 +169,16 @@ namespace ssi
                 confidence = value;
                 OnPropertyChanged("Confidence");
             }
+        }
+
+        public double XCoord
+        {
+            get { return Ax; }
+        }
+
+        public double YCoord
+        {
+            get { return Ay; }
         }
 
         public RectangleListItem(int x1, int y1, int x2, int y2, int body_type, int clothing_state, int gender, string label, double confidence)

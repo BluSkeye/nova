@@ -154,8 +154,8 @@ namespace ssi
                             output += e.Label + delimiter;
                             for (int i = 0; i < e.Rectangles.Count; ++i)
                             {
-                                output += '(' + e.Rectangles[i].Label + ':' + ((double)e.Rectangles[i].X1Coord / Scheme.Width) + ':' + ((double)e.Rectangles[i].Y1Coord / Scheme.Height) +
-                                                                        ":" + ((double)e.Rectangles[i].X2Coord / Scheme.Width) + ':' + ((double)e.Rectangles[i].Y2Coord / Scheme.Height) + 
+                                output += '(' + e.Rectangles[i].Label + ':' + ((double)e.Rectangles[i].AxCoord / Scheme.Width) + ':' + ((double)e.Rectangles[i].AyCoord / Scheme.Height) +
+                                                                        ":" + ((double)e.Rectangles[i].DxCoord / Scheme.Width) + ':' + ((double)e.Rectangles[i].DyCoord / Scheme.Height) + 
                                                                         ":" + e.Rectangles[i].BodyType + ":" + e.Rectangles[i].ClothingState + 
                                                                         ":" + e.Rectangles[i].Gender + ":" + e.Rectangles[i].Confidence + ')' + delimiter;
                             }
@@ -521,8 +521,8 @@ namespace ssi
                                     string rd = data[i].Replace("(", "");
                                     rd = rd.Replace(")", "");
                                     string[] rectangleData = rd.Split(':');
-                                    rectangles.Add(new RectangleListItem((int)(double.Parse(rectangleData[1]) * list.Scheme.Width), (int)(double.Parse(rectangleData[2]) * list.Scheme.Height),
-                                                                         (int)(double.Parse(rectangleData[3]) * list.Scheme.Width), (int)(double.Parse(rectangleData[4]) * list.Scheme.Height), 
+                                    rectangles.Add(new RectangleListItem((int)Math.Floor(double.Parse(rectangleData[1]) * list.Scheme.Width), (int)Math.Floor(double.Parse(rectangleData[2]) * list.Scheme.Height),
+                                                                         (int)Math.Floor(double.Parse(rectangleData[3]) * list.Scheme.Width), (int)Math.Floor(double.Parse(rectangleData[4]) * list.Scheme.Height), 
                                                                          int.Parse(rectangleData[5]), int.Parse(rectangleData[6]),
                                                                          int.Parse(rectangleData[7]),
                                                                          rectangleData[0], double.Parse(rectangleData[8])));

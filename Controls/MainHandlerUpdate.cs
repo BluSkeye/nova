@@ -132,7 +132,7 @@ namespace ssi
                 string cmltrainexePath = AppDomain.CurrentDomain.BaseDirectory + cmltrainexe;
                 string SSIbinaryGitPath = "https://github.com/hcmlab/ssi/raw/master/bin/x64/vc140/";
 
-                if (!IsCMLTrainUptodate || !(File.Exists(cmltrainexePath)))
+                if (false && (!IsCMLTrainUptodate || !(File.Exists(cmltrainexePath))))
                 {
 
 

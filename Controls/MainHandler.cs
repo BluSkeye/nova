@@ -161,6 +161,8 @@ namespace ssi
             control.geometricListControl.maleRB.Click += geometricListRadioButtonChangeGender;
             control.geometricListControl.femaleRb.Click += geometricListRadioButtonChangeGender;
 
+            
+            control.geometricListControl.nextButton.Click += geometricListNextButton_Click;
             control.geometricListControl.selectAllButton.Click += geometricListSelectAll_Click;
             control.geometricListControl.doneButton.Click += geometricListDone_Click;
             control.geometricListControl.geometricDataGrid.SelectionChanged += geometricList_Selection;
