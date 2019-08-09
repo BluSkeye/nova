@@ -938,6 +938,11 @@ namespace ssi
                     return;
                 }
             }
+            else if (e.Key == Key.N)
+            {
+                geometricListNextButton_Click(null, null);
+                return;
+            }
             else if (e.Key == Key.Delete)
             {
                 if (AnnoTierStatic.Selected != null &&

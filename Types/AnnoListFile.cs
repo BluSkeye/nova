@@ -521,10 +521,12 @@ namespace ssi
                                     string rd = data[i].Replace("(", "");
                                     rd = rd.Replace(")", "");
                                     string[] rectangleData = rd.Split(':');
-                                    rectangles.Add(new RectangleListItem((int)Math.Floor(double.Parse(rectangleData[1]) * list.Scheme.Width), (int)Math.Floor(double.Parse(rectangleData[2]) * list.Scheme.Height),
-                                                                         (int)Math.Floor(double.Parse(rectangleData[3]) * list.Scheme.Width), (int)Math.Floor(double.Parse(rectangleData[4]) * list.Scheme.Height), 
-                                                                         int.Parse(rectangleData[5]), int.Parse(rectangleData[6]),
-                                                                         int.Parse(rectangleData[7]),
+                                    int x1 = double.Parse(rectangleData[1]) < 0.0 ? -1 : (int)(double.Parse(rectangleData[1]) * list.Scheme.Width);
+                                    int y1 = double.Parse(rectangleData[2]) < 0.0 ? -1 : (int)(double.Parse(rectangleData[2]) * list.Scheme.Height);
+                                    int x2 = double.Parse(rectangleData[3]) < 0.0 ? -1 : (int)(double.Parse(rectangleData[3]) * list.Scheme.Width);
+                                    int y2 = double.Parse(rectangleData[4]) < 0.0 ? -1 : (int)(double.Parse(rectangleData[4]) * list.Scheme.Height);
+
+                                    rectangles.Add(new RectangleListItem(x1, y1, x2, y2, int.Parse(rectangleData[5]), int.Parse(rectangleData[6]), int.Parse(rectangleData[7]),
                                                                          rectangleData[0], double.Parse(rectangleData[8])));
                                 }
                                 AnnoListItem ali = new AnnoListItem(start, 1 / list.Scheme.SampleRate, frameLabel, "", list.Scheme.MinOrBackColor, frameConfidence, true, null, rectangles);
