@@ -306,7 +306,7 @@ namespace ssi
             bool alreadycheckedcmlupdate = false;
 
 
-            if (Properties.Settings.Default.CheckUpdateOnStart && Properties.Settings.Default.LastUpdateCheckDate.Date != DateTime.Today.Date)
+            if (false && Properties.Settings.Default.CheckUpdateOnStart && Properties.Settings.Default.LastUpdateCheckDate.Date != DateTime.Today.Date)
             {
                 alreadycheckedcmlupdate = true;
                 Properties.Settings.Default.LastUpdateCheckDate = DateTime.Today.Date;
