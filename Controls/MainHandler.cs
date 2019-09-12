@@ -161,7 +161,11 @@ namespace ssi
             control.geometricListControl.maleRB.Click += geometricListRadioButtonChangeGender;
             control.geometricListControl.femaleRb.Click += geometricListRadioButtonChangeGender;
 
-            
+            control.geometricListControl.ageUnknownRB.Click += geometricListRadioButtonChangeAge;
+            control.geometricListControl.ageUnderRB.Click += geometricListRadioButtonChangeAge;
+            control.geometricListControl.agePossibleRB.Click += geometricListRadioButtonChangeAge;
+            control.geometricListControl.ageOKRB.Click += geometricListRadioButtonChangeAge;
+
             control.geometricListControl.nextButton.Click += geometricListNextButton_Click;
             control.geometricListControl.selectAllButton.Click += geometricListSelectAll_Click;
             control.geometricListControl.doneButton.Click += geometricListDone_Click;

@@ -696,7 +696,8 @@ namespace ssi
                     int clothing_state = 0;
                     int body_type = 0;
                     int gender = 0;
-                    rectangles.Add(new RectangleListItem(x1, y1, x2, y2, body_type, clothing_state, gender, "1", 1.0));
+                    int age = -1;
+                    rectangles.Add(new RectangleListItem(x1, y1, x2, y2, body_type, clothing_state, gender, age,"1", 1.0));
                     AnnoListItem ali = new AnnoListItem(i * delta, delta, "Frame " + (i + 1).ToString(), "", anno.Scheme.MinOrBackColor, 1, true, null, rectangles);
                     AnnoList.Add(ali);
                 }

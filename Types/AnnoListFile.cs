@@ -157,7 +157,7 @@ namespace ssi
                                 output += '(' + e.Rectangles[i].Label + ':' + ((double)e.Rectangles[i].AxCoord / Scheme.Width) + ':' + ((double)e.Rectangles[i].AyCoord / Scheme.Height) +
                                                                         ":" + ((double)e.Rectangles[i].DxCoord / Scheme.Width) + ':' + ((double)e.Rectangles[i].DyCoord / Scheme.Height) + 
                                                                         ":" + e.Rectangles[i].BodyType + ":" + e.Rectangles[i].ClothingState + 
-                                                                        ":" + e.Rectangles[i].Gender + ":" + e.Rectangles[i].Confidence + ')' + delimiter;
+                                                                        ":" + e.Rectangles[i].Gender + ":" + e.Rectangles[i].Age + ":" + e.Rectangles[i].Confidence + ')' + delimiter;
                             }
                             sw.WriteLine(output + e.Confidence);
                         }
@@ -526,8 +526,8 @@ namespace ssi
                                     int x2 = double.Parse(rectangleData[3]) < 0.0 ? -1 : (int)(double.Parse(rectangleData[3]) * list.Scheme.Width);
                                     int y2 = double.Parse(rectangleData[4]) < 0.0 ? -1 : (int)(double.Parse(rectangleData[4]) * list.Scheme.Height);
 
-                                    rectangles.Add(new RectangleListItem(x1, y1, x2, y2, int.Parse(rectangleData[5]), int.Parse(rectangleData[6]), int.Parse(rectangleData[7]),
-                                                                         rectangleData[0], double.Parse(rectangleData[8])));
+                                    rectangles.Add(new RectangleListItem(x1, y1, x2, y2, int.Parse(rectangleData[5]), int.Parse(rectangleData[6]), int.Parse(rectangleData[7]), int.Parse(rectangleData[8]),
+                                                                         rectangleData[0], double.Parse(rectangleData[9])));
                                 }
                                 AnnoListItem ali = new AnnoListItem(start, 1 / list.Scheme.SampleRate, frameLabel, "", list.Scheme.MinOrBackColor, frameConfidence, true, null, rectangles);
                                 list.Add(ali);

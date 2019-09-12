@@ -519,7 +519,7 @@ namespace ssi
                         control.geometricListControl.fullyClothedRB.IsChecked = true;
                         control.geometricListControl.fullBodyRB.IsChecked = true;
                         control.geometricListControl.maleRB.IsChecked = true;
-                        RectangleListItem rectangle = new RectangleListItem((int)x, (int)y, (int)x + 1, (int)y + 1, 0, 0, 0, label, 1);
+                        RectangleListItem rectangle = new RectangleListItem((int)x, (int)y, (int)x + 1, (int)y + 1, 0, 0, 0, -1, label, 1);
                         rectangle.Selected = true;
                         rectangles.Add(rectangle);
                         control.geometricListControl.geometricDataGrid.SelectedIndex = rectangles.IndexOf(rectangle);
@@ -609,6 +609,36 @@ namespace ssi
             if (control.geometricListControl.geometricDataGrid.Items.Count > 0)
             {
                 control.geometricListControl.geometricDataGrid.SelectAll();
+            }
+        }
+
+        private void geometricListRadioButtonChangeAge(object sender, RoutedEventArgs e)
+        {
+            if (control.annoListControl.annoDataGrid.SelectedItem != null &&
+                AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.RECTANGLE &&
+                control.geometricListControl.geometricDataGrid.SelectedItems.Count != 0)
+            {
+                AnnoListItem item = (AnnoListItem)control.annoListControl.annoDataGrid.SelectedItems[0];
+                RectangleList rectangles = (RectangleList)item.Rectangles;
+                foreach (RectangleListItem rectangle in control.geometricListControl.geometricDataGrid.SelectedItems)
+                {
+                    if (control.geometricListControl.ageUnknownRB.IsChecked == true)
+                    {
+                        rectangle.Age = -1;
+                    }
+                    else if (control.geometricListControl.ageUnderRB.IsChecked == true)
+                    {
+                        rectangle.Age = 0;
+                    }
+                    else if (control.geometricListControl.agePossibleRB.IsChecked == true)
+                    {
+                        rectangle.Age = 1;
+                    }
+                    else if (control.geometricListControl.ageOKRB.IsChecked == true)
+                    {
+                        rectangle.Age = 2;
+                    }
+                }
             }
         }
 
@@ -733,7 +763,7 @@ namespace ssi
                                     RectangleListItem rli = new RectangleListItem((int)item.Rectangles[j].X1Coord, (int)item.Rectangles[j].Y1Coord, 
                                                                                   (int)item.Rectangles[j].X2Coord, (int)item.Rectangles[j].Y2Coord,
                                                                                   (int)item.Rectangles[j].BodyType, (int)item.Rectangles[j].ClothingState,
-                                                                                  (int)item.Rectangles[j].Gender, 
+                                                                                  (int)item.Rectangles[j].Gender, (int)item.Rectangles[j].Age,
                                                                                   item.Rectangles[j].Label, 0.0);
                                     list[i].Rectangles.Add(rli);
                                     added = true;
@@ -807,6 +837,21 @@ namespace ssi
                                 control.geometricListControl.femaleRb.IsChecked = true;
                                 break;
                         }
+                        switch (rectangle.Age)
+                        {//  0 male, 1 female
+                            case -1:
+                                control.geometricListControl.ageUnknownRB.IsChecked = true;
+                                break;
+                            case 0:
+                                control.geometricListControl.ageUnderRB.IsChecked = true;
+                                break;
+                            case 1:
+                                control.geometricListControl.agePossibleRB.IsChecked = true;
+                                break;
+                            case 2:
+                                control.geometricListControl.ageOKRB.IsChecked = true;
+                                break;
+                        }
                         rectangle.Selected = true;
                     }
                     geometricOverlayUpdate(item, AnnoScheme.TYPE.RECTANGLE, pos);
@@ -869,7 +914,7 @@ namespace ssi
 
                 if (rectangles.Count == 0)
                 {
-                    rectangles.Add(new RectangleListItem(-1, -1, -1, -1, 0, 0, 0, (rectangles.Count + 1).ToString(), 0));
+                    rectangles.Add(new RectangleListItem(-1, -1, -1, -1, 0, 0, 0, -1, (rectangles.Count + 1).ToString(), 0));
                     control.geometricListControl.geometricDataGrid.SelectedIndex = 0;
                 }
 
@@ -922,7 +967,7 @@ namespace ssi
                 {
                     AnnoListItem item = (AnnoListItem)control.annoListControl.annoDataGrid.SelectedItem;
                     RectangleList rectangles = (RectangleList)item.Rectangles;
-                    RectangleListItem rectangle = new RectangleListItem(-1, -1, -1, -1, 0, 0, 0, (rectangles.Count+1).ToString(), 0);
+                    RectangleListItem rectangle = new RectangleListItem(-1, -1, -1, -1, 0, 0, 0, -1, (rectangles.Count+1).ToString(), 0);
                     rectangles.Add(rectangle);
                     geometricTableUpdate();
                     // add functionality to select last in geometric list
