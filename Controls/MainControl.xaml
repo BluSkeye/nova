@@ -75,12 +75,12 @@
                 <MenuItem Header="Fusion" Name="fusionmenu">
                     <MenuItem Header="Bayesian Networks" Name="bnmenu">
                         <MenuItem Header="Train" Name="databaseCMLFusionMenu"/>
-                    <MenuItem Header="Predict" Name="databaseCMLFusionMenuPredict"/>
+                        <MenuItem Header="Predict" Name="databaseCMLFusionMenuPredict"/>
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Complete Current Annotation" Name="databaseCMLCompleteStepMenu" InputGestureText="Ctrl+L"/>
             </MenuItem>
-            
+
             <MenuItem Header="XAI" Name="XAIMenu">
                 <MenuItem Header="LimeExplainer" Name="explanationWindow"/>
                 <MenuItem Header="InnvestigateExplainer" Name="explanationWindowInnvestigate"></MenuItem>
@@ -93,10 +93,10 @@
                 <MenuItem Header="Update CML Tools" Name="updateCMLMenu" />
                 <MenuItem Header="Update Python Tools" Name="updatePythonMenu" />
                 <MenuItem Header="Check For NOVA Update" Name="updateApplicationMenu" />
-                
+
             </MenuItem>
 
-     
+
 
         </Menu>
 
@@ -108,7 +108,6 @@
               Name="viewGrid">
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="450" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
@@ -117,51 +116,100 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <Grid Grid.Column="0" 
-                    Grid.Row="0">
-
+            <Grid Grid.Column="0"  Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="720"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="720"/>
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Border Grid.Column="0" 
-                    Grid.Row="0">
+                <!--<Border Grid.Column="0" Grid.Row="0">
                     <local:GeometricListControl x:Name="geometricListControl"></local:GeometricListControl>
+                </Border>-->
+
+                <Border Name="mediaStatusBar"
+                            Grid.Column="0"
+                            Grid.Row="0">
+
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="300" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30" />
+                        </Grid.RowDefinitions>
+
+                        <StatusBar Grid.Row="0" Grid.Column="0" Background="Transparent">
+                            <Button Name="mediaSettingsButton"
+                                    Background="Transparent" 
+                                    BorderBrush="Transparent"
+                                    BorderThickness="0"
+                                    Focusable="False">
+                                <Image Source="/Resources/settings.png" Width="16"></Image>
+                            </Button>
+                            <TextBlock Name="mediaStatusFileNameLabel" TextTrimming="WordEllipsis"></TextBlock>
+                            <Separator />
+                            <TextBlock Name="mediaStatusSampleRateLabel" TextTrimming="WordEllipsis"></TextBlock>
+                        </StatusBar>
+
+                        <local:VolumeControl x:Name="mediaVolumeControl" 
+                                                        Grid.Row="0"
+                                                        Grid.Column="1"
+                                                        Width="250" 
+                                                        HorizontalAlignment="Right"
+                                                        Margin="0,0,20,0"/>
+
+                        <StackPanel Grid.Row="0"
+                                        Grid.Column="2"
+                                        Orientation="Horizontal">
+                            <TextBlock Name="mediaPositionLabel" 
+                                           VerticalAlignment="Center" 
+                                           TextTrimming="WordEllipsis">#0</TextBlock>
+                            <Button Name="mediaCloseButton" 
+                                        Content="X" 
+                                        HorizontalAlignment="Right" 
+                                        Background="Transparent" 
+                                        BorderBrush="Transparent"
+                                        BorderThickness="0"
+                                        Margin="5,0,5,0"
+                                        ToolTip="Close selected annotation tier"
+                                        Focusable="False"/>
+                        </StackPanel>
+
+                    </Grid>
+
                 </Border>
 
                 <Border Grid.Column="0" 
-                    Grid.Row="1">
+                            Grid.Row="1" 
+                            Background="Transparent">
+                    <local:MediaBoxControl x:Name="mediaBoxControl"/>
+                </Border>
+
+
+
+                <Border Grid.Column="0" Grid.Row="2">
                     <local:AnnoListControl x:Name="annoListControl"></local:AnnoListControl>
                 </Border>
 
             </Grid>
 
-
-            <GridSplitter 
-                ResizeDirection="Columns"
-                Grid.Column="1"
-                Grid.Row="0" 
-                Height="Auto"
-                Width="6"
-                HorizontalAlignment="Stretch" 
-                VerticalAlignment="Stretch" 
-                Margin="0">
-            </GridSplitter>
-
-            <Grid Grid.Column="2"
-                  Grid.Row="0">
+            <Grid Grid.Column="1" Grid.Row="0">
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
+                <!--
                 <Border Name="mediaStatusBar"
                             Grid.Column="0"
                             Grid.Row="0">
@@ -236,10 +284,10 @@
                         VerticalAlignment="Stretch"
                         Margin="0">
                 </GridSplitter>
-
+                -->
                 <AdornerDecorator Name="signalAndAnnoAdorner"
                                       Grid.Column="0"
-                                      Grid.Row="3">
+                                      Grid.Row="0">
 
                     <Grid Name="signalAndAnnoGrid"
                             VerticalAlignment="Stretch"
@@ -309,8 +357,8 @@
                                         <TextBlock Name="signalStatusValueMaxLabel" ToolTip="The max Value of the Signal" TextTrimming="WordEllipsis"></TextBlock>
                                         <Separator />
                                         <TextBlock Name="signalStatusValueLabel" ToolTip="The current sample value of the selected signal track" TextTrimming="WordEllipsis"></TextBlock>
-                                        
-                                        
+
+
                                     </StatusBar>
 
                                     <local:VolumeControl x:Name="signalVolumeControl" 
@@ -327,7 +375,7 @@
                                                             VerticalAlignment="Center"
                                                             TextTrimming="WordEllipsis">00:00:00.00</TextBlock>
                                         <Separator />
-                                        
+
                                         <Button Name="signalCloseButton" 
                                                         Content="X" 
                                                         HorizontalAlignment="Right" 
@@ -474,9 +522,7 @@
                         </Border>
 
                     </Grid>
-
                 </AdornerDecorator>
-
             </Grid>
 
             <Border Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3">
@@ -492,7 +538,7 @@
                     </StackPanel>
                 </Grid>
             </Grid>
-            
+
         </Grid>
     </Grid>
 

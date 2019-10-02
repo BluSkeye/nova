@@ -150,7 +150,7 @@ namespace ssi
             setAnnoList(tier.AnnoList);
             control.annoListControl.editComboBox.Items.Clear();
 
-            if (AnnoTierStatic.Selected != null)
+            /*if (AnnoTierStatic.Selected != null)
             {
                 control.geometricListControl.Visibility = Visibility.Collapsed;
                 control.annoLiveModeCheckBox.Visibility = Visibility.Collapsed;
@@ -236,7 +236,7 @@ namespace ssi
                     control.annoListControl.LabelColumn.Width = 70;
                     control.annoListControl.ScoreColumn.Width = 0;
                 }
-            }
+            }*/
         }
 
         private void changeAnnoTierSegmentHandler(AnnoTierSegment segment, EventArgs e)

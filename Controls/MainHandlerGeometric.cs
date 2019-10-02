@@ -129,22 +129,22 @@ namespace ssi
 
         private void setPointList(PointList pl)
         {
-            control.geometricListControl.geometricDataGrid.ItemsSource = pl;
+            //control.geometricListControl.geometricDataGrid.ItemsSource = pl;
         }
 
         private void setRectangleList(RectangleList rl)
         {
-            control.geometricListControl.geometricDataGrid.ItemsSource = rl;
+            //control.geometricListControl.geometricDataGrid.ItemsSource = rl;
         }
 
         private void geometricTableUpdate()
         {
-            control.geometricListControl.geometricDataGrid.Items.Refresh();
+            //control.geometricListControl.geometricDataGrid.Items.Refresh();
         }
 
         private void geometricSelectItem(AnnoListItem item, int pos)
         {
-            if (item.Points != null && item.Points.Count > 0)
+            /*if (item.Points != null && item.Points.Count > 0)
             {
                 setPointList(item.Points);
                 geometricOverlayUpdate(item, AnnoScheme.TYPE.POINT, pos);
@@ -168,7 +168,7 @@ namespace ssi
                 }
 
                 geometricOverlayUpdate(item, AnnoScheme.TYPE.RECTANGLE, pos);
-            }
+            }*/
         }
 
         public void geometricOverlayUpdate(AnnoListItem item, AnnoScheme.TYPE type, int pos = -1)
@@ -343,7 +343,7 @@ namespace ssi
 
         void OnMediaMouseMove(IMedia media, double x, double y)
         {
-            if (RightHeld)
+            /*if (RightHeld)
             {
                 if (AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.POINT)
                 {
@@ -416,12 +416,12 @@ namespace ssi
                     geometricOverlayUpdate(item, AnnoScheme.TYPE.RECTANGLE, pos);
                     geometricTableUpdate();
                 }
-            }
+            }*/
         }
 
         void OnMediaMouseUp(IMedia media, double x, double y)
         {
-            if (Mouse.RightButton == MouseButtonState.Released && RightHeld)
+            /*if (Mouse.RightButton == MouseButtonState.Released && RightHeld)
             {
                 RightHeld = false;
             }
@@ -470,14 +470,12 @@ namespace ssi
                     geometricOverlayUpdate(item, AnnoScheme.TYPE.RECTANGLE, pos);
                     geometricTableUpdate();
                 }
-            }
-
-
+            }*/
         }
         private int min_area = 400;
         void OnMediaMouseDown(IMedia media, double x, double y)
         {
-            if (Mouse.LeftButton == MouseButtonState.Pressed)
+            /*if (Mouse.LeftButton == MouseButtonState.Pressed)
             {
                 if (AnnoTierStatic.Selected != null &&
                     AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.POINT &&
@@ -539,7 +537,7 @@ namespace ssi
             {
                 leftHeldPos = new double[] { x, y };
                 LeftHeld = true;
-            }
+            }*/
         }
 
         /*private void geometricListEdit_Click(object sender, RoutedEventArgs e)
@@ -590,7 +588,7 @@ namespace ssi
 
         private void geometricListDone_Click(object sender, RoutedEventArgs e)
         {
-            if (control.geometricListControl.geometricDataGrid.SelectedItems.Count > 0)
+            /*if (control.geometricListControl.geometricDataGrid.SelectedItems.Count > 0)
             {
                 control.geometricListControl.geometricDataGrid.SelectedItems.Clear();
                 if (control.geometricListControl.geometricDataGrid.Items.Count == 1)
@@ -601,20 +599,20 @@ namespace ssi
                         control.geometricListControl.geometricDataGrid.SelectedIndex = 0;
                     }
                 }
-            }
+            }*/
         }
 
         private void geometricListSelectAll_Click(object sender, RoutedEventArgs e)
         {
-            if (control.geometricListControl.geometricDataGrid.Items.Count > 0)
+            /*if (control.geometricListControl.geometricDataGrid.Items.Count > 0)
             {
                 control.geometricListControl.geometricDataGrid.SelectAll();
-            }
+            }*/
         }
 
         private void geometricListRadioButtonChangeAge(object sender, RoutedEventArgs e)
         {
-            if (control.annoListControl.annoDataGrid.SelectedItem != null &&
+            /*if (control.annoListControl.annoDataGrid.SelectedItem != null &&
                 AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.RECTANGLE &&
                 control.geometricListControl.geometricDataGrid.SelectedItems.Count != 0)
             {
@@ -639,12 +637,12 @@ namespace ssi
                         rectangle.Age = 2;
                     }
                 }
-            }
+            }*/
         }
 
         private void geometricListRadioButtonChangeGender(object sender, RoutedEventArgs e)
         {
-            if (control.annoListControl.annoDataGrid.SelectedItem != null &&
+/*            if (control.annoListControl.annoDataGrid.SelectedItem != null &&
                 AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.RECTANGLE &&
                 control.geometricListControl.geometricDataGrid.SelectedItems.Count != 0)
             {
@@ -663,12 +661,12 @@ namespace ssi
 
                     }
                 }
-            }
+            }*/
         }
 
         private void geometricListRadioButtonChangeBody(object sender, RoutedEventArgs e)
         {
-            if (control.annoListControl.annoDataGrid.SelectedItem != null &&
+            /*if (control.annoListControl.annoDataGrid.SelectedItem != null &&
                 AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.RECTANGLE &&
                 control.geometricListControl.geometricDataGrid.SelectedItems.Count != 0)
             {
@@ -694,12 +692,12 @@ namespace ssi
                         rectangle.BodyType = 3;
                     }
                 }
-            }
+            }*/
         }
 
         private void geometricListCopy_Click(object sender, RoutedEventArgs e)
         {
-            if (control.annoListControl.annoDataGrid.SelectedItems.Count == 1)
+            /*if (control.annoListControl.annoDataGrid.SelectedItems.Count == 1)
             {
                 if (control.geometricListControl.geometricDataGrid.Items[0].GetType().Name == "PointListItem")
                 {
@@ -778,13 +776,13 @@ namespace ssi
             {
                 MessageBoxResult mb = MessageBoxResult.OK;
                 mb = MessageBox.Show("Select one frame to copy", "Confirm", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
+            }*/
         }
 
         private System.Collections.IList previous_selected_rl = null;
         private void geometricList_Selection(object sender, SelectionChangedEventArgs e)
         {            
-            if (control.annoListControl.annoDataGrid.SelectedItem != null)
+            /*if (control.annoListControl.annoDataGrid.SelectedItem != null)
             {
                 AnnoListItem item = (AnnoListItem) control.annoListControl.annoDataGrid.SelectedItem;
                 int pos = control.annoListControl.annoDataGrid.SelectedIndex;
@@ -857,7 +855,7 @@ namespace ssi
                     geometricOverlayUpdate(item, AnnoScheme.TYPE.RECTANGLE, pos);
                 }
 
-            }
+            }*/
 
             /*if (control.geometricListControl.geometricDataGrid.SelectedItems.Count == 1)
             {
@@ -877,7 +875,7 @@ namespace ssi
 
         private void geometricListDelete(object sender, RoutedEventArgs e)
         {
-            if (control.annoListControl.annoDataGrid.SelectedItem != null &&
+            /*if (control.annoListControl.annoDataGrid.SelectedItem != null &&
                 AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.POINT &&
                 control.geometricListControl.geometricDataGrid.SelectedItems.Count != 0) // and is a point
             {
@@ -922,13 +920,13 @@ namespace ssi
                 geometricTableUpdate();
                 int pos = control.annoListControl.annoDataGrid.SelectedIndex;
                 geometricOverlayUpdate(item, AnnoScheme.TYPE.RECTANGLE, pos);
-            }
+            }*/
 
         }
 
         private void geometricKeyDown(object sender, KeyEventArgs e)
         {
-            if (control.annoListControl.annoDataGrid.SelectedItems.Count == 1 && control.geometricListControl.geometricDataGrid.SelectedItems.Count == 1)
+            /*if (control.annoListControl.annoDataGrid.SelectedItems.Count == 1 && control.geometricListControl.geometricDataGrid.SelectedItems.Count == 1)
             {
                 int index = control.geometricListControl.geometricDataGrid.SelectedIndex;
                 if (e.Key == Key.OemPeriod)
@@ -997,12 +995,12 @@ namespace ssi
                     geometricListDelete(sender, e);
                     return;
                 }
-            }
+            }*/
         }
 
         public void jumpToGeometric(int pos)
         {
-            if (control.annoListControl.annoDataGrid.Items.Count == 0) return;
+            /*if (control.annoListControl.annoDataGrid.Items.Count == 0) return;
 
             while (control.annoListControl.annoDataGrid.SelectedItems.Count > 0)
             {
@@ -1017,13 +1015,13 @@ namespace ssi
             }
             control.annoListControl.annoDataGrid.Items.Refresh();
             control.annoListControl.annoDataGrid.ScrollIntoView(control.annoListControl.annoDataGrid.Items[pos]);
-            geometricOverlayUpdate(null,AnnoScheme.TYPE.CONTINUOUS, 0);
+            geometricOverlayUpdate(null,AnnoScheme.TYPE.CONTINUOUS, 0);*/
         }
 
         private List<AnnoList> geometricCompare = new List<AnnoList>(0);
         private void geometricListRadioButtonChangeClothing(object sender, RoutedEventArgs e)
         {
-            if (control.annoListControl.annoDataGrid.SelectedItem != null &&
+            /*if (control.annoListControl.annoDataGrid.SelectedItem != null &&
                 AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.RECTANGLE &&
                 control.geometricListControl.geometricDataGrid.SelectedItems.Count != 0)
             {
@@ -1045,7 +1043,7 @@ namespace ssi
                         rectangle.ClothingState = 2;
                     }
                 }
-            }
+            }*/
         }
     }
 

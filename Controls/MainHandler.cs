@@ -147,32 +147,32 @@ namespace ssi
 
             //control.geometricListControl.editButton.Click += geometricListEdit_Click;
             //control.geometricListControl.editTextBox.GotMouseCapture += geometricListEdit_Focused;
-            control.geometricListControl.copyButton.Click += geometricListCopy_Click;
-
-            control.geometricListControl.fullBodyRB.Click += geometricListRadioButtonChangeBody;
-            control.geometricListControl.lowerBodyRB.Click += geometricListRadioButtonChangeBody;
-            control.geometricListControl.partialBodyRB.Click += geometricListRadioButtonChangeBody;
-            control.geometricListControl.upperBodyRB.Click += geometricListRadioButtonChangeBody;
-
-            control.geometricListControl.fullyClothedRB.Click += geometricListRadioButtonChangeClothing;
-            control.geometricListControl.partiallyClothedRB.Click += geometricListRadioButtonChangeClothing;
-            control.geometricListControl.nakedRB.Click += geometricListRadioButtonChangeClothing;
-
-            control.geometricListControl.maleRB.Click += geometricListRadioButtonChangeGender;
-            control.geometricListControl.femaleRb.Click += geometricListRadioButtonChangeGender;
-
-            control.geometricListControl.ageUnknownRB.Click += geometricListRadioButtonChangeAge;
-            control.geometricListControl.ageUnderRB.Click += geometricListRadioButtonChangeAge;
-            control.geometricListControl.agePossibleRB.Click += geometricListRadioButtonChangeAge;
-            control.geometricListControl.ageOKRB.Click += geometricListRadioButtonChangeAge;
-
-            control.geometricListControl.nextButton.Click += geometricListNextButton_Click;
-            control.geometricListControl.selectAllButton.Click += geometricListSelectAll_Click;
-            control.geometricListControl.doneButton.Click += geometricListDone_Click;
-            control.geometricListControl.geometricDataGrid.SelectionChanged += geometricList_Selection;
-            control.geometricListControl.MenuItemDeleteClick.Click += geometricListDelete;
-            control.geometricListControl.KeyDown += geometricKeyDown;
-            control.geometricListControl.Visibility = Visibility.Collapsed;
+            //control.geometricListControl.copyButton.Click += geometricListCopy_Click;
+            //
+            //control.geometricListControl.fullBodyRB.Click += geometricListRadioButtonChangeBody;
+            //control.geometricListControl.lowerBodyRB.Click += geometricListRadioButtonChangeBody;
+            //control.geometricListControl.partialBodyRB.Click += geometricListRadioButtonChangeBody;
+            //control.geometricListControl.upperBodyRB.Click += geometricListRadioButtonChangeBody;
+            //
+            //control.geometricListControl.fullyClothedRB.Click += geometricListRadioButtonChangeClothing;
+            //control.geometricListControl.partiallyClothedRB.Click += geometricListRadioButtonChangeClothing;
+            //control.geometricListControl.nakedRB.Click += geometricListRadioButtonChangeClothing;
+            //
+            //control.geometricListControl.maleRB.Click += geometricListRadioButtonChangeGender;
+            //control.geometricListControl.femaleRb.Click += geometricListRadioButtonChangeGender;
+            //
+            //control.geometricListControl.ageUnknownRB.Click += geometricListRadioButtonChangeAge;
+            //control.geometricListControl.ageUnderRB.Click += geometricListRadioButtonChangeAge;
+            //control.geometricListControl.agePossibleRB.Click += geometricListRadioButtonChangeAge;
+            //control.geometricListControl.ageOKRB.Click += geometricListRadioButtonChangeAge;
+            //
+            //control.geometricListControl.nextButton.Click += geometricListNextButton_Click;
+            //control.geometricListControl.selectAllButton.Click += geometricListSelectAll_Click;
+            //control.geometricListControl.doneButton.Click += geometricListDone_Click;
+            //control.geometricListControl.geometricDataGrid.SelectionChanged += geometricList_Selection;
+            //control.geometricListControl.MenuItemDeleteClick.Click += geometricListDelete;
+            //control.geometricListControl.KeyDown += geometricKeyDown;
+            //control.geometricListControl.Visibility = Visibility.Collapsed;
 
             // Menu
 
@@ -471,7 +471,7 @@ namespace ssi
             control.timeLineControl.rangeSlider.Update();
             control.timeLineControl.rangeSlider.slider.RangeStartSelected = 0;
             control.timeLineControl.rangeSlider.slider.RangeStopSelected = 100000;
-            control.geometricListControl.Visibility = Visibility.Collapsed;
+            //control.geometricListControl.Visibility = Visibility.Collapsed;
 
             return true;
         }
