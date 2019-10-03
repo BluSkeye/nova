@@ -17,7 +17,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Column="0" Orientation="Horizontal" FlowDirection="LeftToRight" HorizontalAlignment="Left">
-            <Button Name="newAnnoButton" Width="80" Height="25" VerticalAlignment="Center" Margin="10,0,0,0" IsEnabled="False" Focusable="False">New Anno</Button>
+            <!--<Button Name="newAnnoButton" Width="80" Height="25" VerticalAlignment="Center" Margin="10,0,0,0" IsEnabled="False" Focusable="False">New Anno</Button>-->
             <!--<Button Name="newAnnoFromDatabaseButton" Width="80" Height="25" Margin="5" VerticalAlignment="Center" Focusable="False">Database</Button>-->
         </StackPanel>
 

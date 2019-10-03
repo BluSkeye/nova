@@ -150,9 +150,9 @@ namespace ssi
             setAnnoList(tier.AnnoList);
             control.annoListControl.editComboBox.Items.Clear();
 
-            /*if (AnnoTierStatic.Selected != null)
+            if (AnnoTierStatic.Selected != null)
             {
-                control.geometricListControl.Visibility = Visibility.Collapsed;
+                //control.geometricListControl.Visibility = Visibility.Collapsed;
                 control.annoLiveModeCheckBox.Visibility = Visibility.Collapsed;
                 control.annoLiveModeCheckBoxLabel.Visibility = Visibility.Collapsed;
                 control.annoLiveModeActivateMouse.Visibility = Visibility.Collapsed;
@@ -163,8 +163,8 @@ namespace ssi
                     AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.GRAPH ||
                     AnnoTierStatic.Selected.AnnoList.Scheme.Type == AnnoScheme.TYPE.SEGMENTATION)
                 {
-                    control.geometricListControl.Visibility = Visibility.Visible;
-                    control.geometricListControl.Height = control.ActualHeight / 2;
+                    //control.geometricListControl.Visibility = Visibility.Visible;
+                    //control.geometricListControl.Height = control.ActualHeight / 2;
                 }
                 else
                 {
@@ -236,7 +236,7 @@ namespace ssi
                     control.annoListControl.LabelColumn.Width = 70;
                     control.annoListControl.ScoreColumn.Width = 0;
                 }
-            }*/
+            }
         }
 
         private void changeAnnoTierSegmentHandler(AnnoTierSegment segment, EventArgs e)

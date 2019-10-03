@@ -170,12 +170,12 @@ namespace ssi
 
             if (Time.TotalDuration > 0 == true || isConnectedAndHasSession)
             {
-                control.navigator.newAnnoButton.IsEnabled = true;
+                //control.navigator.newAnnoButton.IsEnabled = true;
             }
 
             else
             {
-                control.navigator.newAnnoButton.IsEnabled = false;
+                //control.navigator.newAnnoButton.IsEnabled = false;
             }
 
             

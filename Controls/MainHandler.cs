@@ -238,7 +238,7 @@ namespace ssi
 
             // Navigator
 
-            control.navigator.newAnnoButton.Click += navigatorNewAnno_Click;
+            //control.navigator.newAnnoButton.Click += navigatorNewAnno_Click;
             control.navigator.clearButton.Click += navigatorClearSession_Click;
             control.navigator.jumpFrontButton.Click += navigatorJumpFront_Click;
             control.navigator.playButton.Click += navigatorPlay_Click;

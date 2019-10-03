@@ -15,12 +15,12 @@ namespace ssi
 
 
 
-            newAnnoButton.Background = Defaults.Brushes.ButtonColor;
-            newAnnoButton.Foreground = Defaults.Brushes.ButtonForeColor;
-            if (!newAnnoButton.IsEnabled)
-            {
-                newAnnoButton.Foreground = Brushes.Black;
-            }
+            //newAnnoButton.Background = Defaults.Brushes.ButtonColor;
+            //newAnnoButton.Foreground = Defaults.Brushes.ButtonForeColor;
+            //if (!newAnnoButton.IsEnabled)
+            //{
+            //    newAnnoButton.Foreground = Brushes.Black;
+            //}
 
             playButton.Background = Defaults.Brushes.ButtonColor;
             playButton.Foreground = Defaults.Brushes.ButtonForeColor;
