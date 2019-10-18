@@ -223,7 +223,7 @@ namespace ssi
             control.helpDocumentationMenu.Click += helpDocumentationMenu_Click;
             control.helpShortcutsMenu.Click += helpShortcutsMenu_Click;
             control.updateApplicationMenu.Click += updateApplication_Click;
-            control.updateCMLMenu.Click += updateCML_Click;
+            //control.updateCMLMenu.Click += updateCML_Click;
             control.updatePythonMenu.Click += updatePython_Click;
             control.aboutMenu.Click += aboutMenu_Click;
 
@@ -315,8 +315,8 @@ namespace ssi
                 alreadycheckedcmlupdate = true;
                 Properties.Settings.Default.LastUpdateCheckDate = DateTime.Today.Date;
                 Properties.Settings.Default.Save();
-                checkForUpdates(true);
-                checkForCMLUpdates(true);
+                //checkForUpdates(true);
+                //checkForCMLUpdates(true);
                
             }
 
@@ -335,12 +335,12 @@ namespace ssi
             string cmltrainexe = "cmltrain.exe";
             string cmltrainexePath = AppDomain.CurrentDomain.BaseDirectory + cmltrainexe;
 
-            if (!(File.Exists(cmltrainexePath)) && !alreadycheckedcmlupdate)
+            /*if (!(File.Exists(cmltrainexePath)) && !alreadycheckedcmlupdate)
             {
 
                 checkForCMLUpdates(true);
 
-            }
+            }*/
 
 
             if (Properties.Settings.Default.DatabaseDirectory == "")

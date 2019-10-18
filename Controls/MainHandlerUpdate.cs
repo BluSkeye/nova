@@ -186,7 +186,7 @@ namespace ssi
 
         private void updateCML_Click(object sender, RoutedEventArgs e)
         {
-            checkForCMLUpdates(false);
+            //checkForCMLUpdates(false);
         }
 
         private void updatePython_Click(object sender, RoutedEventArgs e)

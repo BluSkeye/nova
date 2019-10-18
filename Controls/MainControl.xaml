@@ -118,11 +118,11 @@
 
             <Grid Grid.Column="0"  Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="720"/>
+                    <ColumnDefinition Width="500"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="720"/>
+                    <RowDefinition Height="500"/>
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
