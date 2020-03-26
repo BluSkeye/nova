@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -614,7 +615,17 @@ namespace ssi
             if (filePath != null && filePath.Length > 0)
             {
                 loadProjectFile(filePath[0]);
+
+                if (autoSaveThread != null)
+                {
+                    autoSaveThread.Abort();
+                    autoSaveThread = null;
+                    Console.WriteLine("autoSaveThread == null");
+                }
+                autoSaveThread = new Thread(new ThreadStart(autoSaveStart));
+                autoSaveThread.Start();
             }
+            
         }
 
         #endregion LOAD
@@ -1162,6 +1173,7 @@ namespace ssi
         private void fileLoadProject_Click(object sender, RoutedEventArgs e)
         {
             loadProject();
+
         }
 
         private void exportSamples_Click(object sender, RoutedEventArgs e)

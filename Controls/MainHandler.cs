@@ -72,6 +72,9 @@ namespace ssi
         private CancellationTokenSource tokenSource = new CancellationTokenSource();
         public AnnoTierSegment temp_segment;
 
+
+        private Thread autoSaveThread = null;
+
         public class DownloadStatus
         {
             public string File;
@@ -401,8 +404,25 @@ namespace ssi
             updateAnnoInfo(AnnoTierStatic.Selected);
         }
 
+        public void autoSaveStart()
+        {
+            //Console.WriteLine("autoSaveStart");
+            while (true)
+            {
+                Thread.Sleep(1000*60*1); // 1 minutes
+                //Thread.Sleep(1000 * 10);
+                saveAllAnnos();
+            }
+        }
+
         public bool clearWorkspace()
         {
+            if (autoSaveThread != null)
+            {
+                autoSaveThread.Abort();
+                autoSaveThread = null;
+                //Console.WriteLine("autoSaveThread == null");
+            }
             tokenSource.Cancel();
             Stop();
             updateTimeRange(1);
@@ -533,12 +553,28 @@ namespace ssi
                 loadMultipleFilesOrDirectory(filenames);
                 control.Cursor = Cursors.Arrow;
                 control.annoListControl.annoDataGrid.SelectedIndex = 0;
+                if (autoSaveThread != null)
+                {
+                    autoSaveThread.Abort();
+                    autoSaveThread = null;
+                    //Console.WriteLine("autoSaveThread == null");
+                }
+                autoSaveThread = new Thread(new ThreadStart(autoSaveStart));
+                autoSaveThread.Start();
             }
         }
 
         private void annoSaveAll_Click(object sender, RoutedEventArgs e)
         {
             saveAllAnnos();
+            if (autoSaveThread != null)
+            {
+                autoSaveThread.Abort();
+                autoSaveThread = null;
+                //Console.WriteLine("autoSaveThread == null");
+            }
+            autoSaveThread = new Thread(new ThreadStart(autoSaveStart));
+            autoSaveThread.Start();
         }
 
 

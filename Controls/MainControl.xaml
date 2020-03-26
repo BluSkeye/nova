@@ -52,9 +52,9 @@
             </MenuItem>
             <MenuItem Header="ANNOTATION">
                 <MenuItem Header="New Annotation" Name="annoNewMenu" InputGestureText="Ctrl+N"/>
-                <MenuItem Header="Save" Name="annoSaveMenu" InputGestureText="Ctrl+S"/>
+                <MenuItem Header="Save" Name="annoSaveMenu"/>
                 <MenuItem Header="Save As Finished" Name="annoSaveAsFinishedMenu"/>
-                <MenuItem Header="Save All" Name="annoSaveAllMenu" />
+                <MenuItem Header="Save All" Name="annoSaveAllMenu" InputGestureText="Ctrl+S"/>
                 <MenuItem Header="Reload" Name="annoReloadMenu" InputGestureText="Ctrl+R"/>
                 <MenuItem Header="Reload From Backup" Name="annoReloadBackupMenu" InputGestureText="Ctrl+B"/>
                 <MenuItem Header="Export As" Name="annoExportMenu" />
@@ -118,11 +118,11 @@
 
             <Grid Grid.Column="0"  Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="500"/>
+                    <ColumnDefinition Width="450"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="500"/>
+                    <RowDefinition Height="450"/>
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
@@ -138,8 +138,8 @@
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="300" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="300" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
@@ -157,19 +157,20 @@
                             <Separator />
                             <TextBlock Name="mediaStatusSampleRateLabel" TextTrimming="WordEllipsis"></TextBlock>
                         </StatusBar>
-
+                        
                         <local:VolumeControl x:Name="mediaVolumeControl" 
                                                         Grid.Row="0"
-                                                        Grid.Column="1"
+                                                        Grid.Column="2"
                                                         Width="250" 
                                                         HorizontalAlignment="Right"
                                                         Margin="0,0,20,0"/>
 
                         <StackPanel Grid.Row="0"
-                                        Grid.Column="2"
+                                        Grid.Column="1"
                                         Orientation="Horizontal">
                             <TextBlock Name="mediaPositionLabel" 
                                            VerticalAlignment="Center" 
+                                           HorizontalAlignment="Left"
                                            TextTrimming="WordEllipsis">#0</TextBlock>
                             <Button Name="mediaCloseButton" 
                                         Content="X" 

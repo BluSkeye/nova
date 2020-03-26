@@ -459,7 +459,16 @@ namespace ssi
                         {                            
                             if (e.KeyboardDevice.IsKeyDown(Key.S))
                             {
-                                saveSelectedAnno();
+                                //saveSelectedAnno();ite
+                                saveAllAnnos();
+                                if (autoSaveThread != null)
+                                {
+                                    autoSaveThread.Abort();
+                                    autoSaveThread = null;
+                                    //Console.WriteLine("autoSaveThread == null");
+                                }
+                                autoSaveThread = new Thread(new ThreadStart(autoSaveStart));
+                                autoSaveThread.Start();
                             }
 
                             else  if (e.KeyboardDevice.IsKeyDown(Key.N))
